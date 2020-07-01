@@ -1,0 +1,6 @@
+[submodule "firmware/components/renard-phy-s2lp-hal-esp32"]
+	path = firmware/components/renard-phy-s2lp-hal-esp32
+	url = https://github.com/jeija/renard-phy-s2lp-hal-esp32
+[submodule "firmware/components/renard-phy-s2lp-container/renard-phy-s2lp"]
+	path = firmware/components/renard-phy-s2lp-container/renard-phy-s2lp
+	url = https://github.com/jeija/renard-phy-s2lp
