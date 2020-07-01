@@ -18,7 +18,7 @@ The controller mainly consists of the following components:
 * A BME280 environmental sensor for measuring temperature, pressure and humidity
 * A DRV8872 as DC motor driver with an INA219 for motor current measurement (stall detection) for the door, as well as an input for a reed contact
 
-Everything is mounted on a tiny 50x50mm PCB which fits nicely into an off-the-shelf casing (Strapubox A515)
+Everything is mounted on a tiny 50x50mm PCB which fits nicely into an off-the-shelf plastic case (Strapubox A515).
 
 ![The PCB in its case](images/casing.jpg)
 
@@ -32,9 +32,9 @@ The system is is powered by a 12V/7.2Ah lead-acid battery, which is recharged by
 
 ## Firmware
 The controller firmware is based on [esp-idf](https://github.com/espressif/esp-idf).
-Sigfox functionality is based on [renard-phy-s2lp](https://github.com/jeija/renard-phy-s2lp) and [renard-phy-s2lp-hal-esp32](https://github.com/jeija/renard-phy-s2lp-hal-esp32), which are included as git suprojects. This means that you need to make sure to clone this repository with the `--recursive` flag.
+Sigfox functionality is based on [renard-phy-s2lp](https://github.com/jeija/renard-phy-s2lp) and [renard-phy-s2lp-hal-esp32](https://github.com/jeija/renard-phy-s2lp-hal-esp32), which are included as git subprojects. This means that you need to make sure to clone this repository with the `--recursive` flag.
 
-The firmware supports over-the-air firmware updates via WiFi. This functionality is based on [esp32-softap-ota](https://github.com/Jeija/esp32-softap-ota).
+The firmware supports Over-the-Air (OTA) updates via WiFi. This functionality is based on [esp32-softap-ota](https://github.com/Jeija/esp32-softap-ota).
 
 ### Configuration
 For now, Sigfox device ID and secret key are configured directly in `firmware/main/src/sigfox.c`, see variables `sigfox_key` and `sigfox_devid`. The provided default values are those that I published during [my Sigfox reverse engineering presentation](https://jeija.net/sigfox/), so they are known to be compromised!
@@ -52,11 +52,11 @@ Compile the firmware as described previously and obtain the firmware binary at `
 
 Press both buttons of the chicken coop (up and down) simultaneously until the controller starts beeping regularly. This indicates that it is ready to receive updates.
 
-The controller broadcasts a WiFi network with SSID `ESP32 OTA Update` and acts as an HTTP server. Connect to it, open the webpage at [192.168.4.1](http://192.168.4.1) and use the form to upload the binary. The webpage will show the update progress.
+The controller broadcasts a WiFi network with SSID `ESP32 OTA Update` and acts as an HTTP server. Connect to it, open the webpage at [192.168.4.1](http://192.168.4.1) and use the form to upload the binary. The webpage will display the update progress.
 
 You can also use the `compile_and_post.sh` script to automatically perform the OTA firmware update, which might be useful during development.
 
 ## Web Component
-The web component connects to the Sigfox API to provide downlinks (e.g. open / close time configuration) to the controller, analyze uplinks and visualize information.
+The web component is a node.js application that runs on any web server that connects to the Sigfox API to provide downlinks (e.g. open / close time configuration) to the controller, analyze uplinks and visualize information.
 
 This component is currently not public, but feel free to contact me if you have any questions regarding it.
