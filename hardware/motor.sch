@@ -1,0 +1,275 @@
+EESchema Schematic File Version 4
+EELAYER 30 0
+EELAYER END
+$Descr A4 11693 8268
+encoding utf-8
+Sheet 4 5
+Title ""
+Date ""
+Rev ""
+Comp ""
+Comment1 ""
+Comment2 ""
+Comment3 ""
+Comment4 ""
+$EndDescr
+$Comp
+L huhnsfx-rescue:DRV8872DDA-Driver_Motor U5
+U 1 1 5D4041F8
+P 2900 1600
+F 0 "U5" H 3150 1850 50  0000 C CNN
+F 1 "DRV8872DDA" H 3200 1250 50  0000 C CNN
+F 2 "Package_SO:Texas_HTSOP-8-1EP_3.9x4.9mm_P1.27mm_EP2.95x4.9mm_Mask2.4x3.1mm_ThermalVias" H 3100 1500 50  0001 C CNN
+F 3 "http://www.ti.com/lit/ds/symlink/drv8872.pdf" H 2650 1950 50  0001 C CNN
+	1    2900 1600
+	1    0    0    -1  
+$EndComp
+$Comp
+L power:GND #PWR?
+U 1 1 5D4041FE
+P 6800 2450
+AR Path="/5D4041FE" Ref="#PWR?"  Part="1" 
+AR Path="/5D401D05/5D4041FE" Ref="#PWR029"  Part="1" 
+F 0 "#PWR029" H 6800 2200 50  0001 C CNN
+F 1 "GND" H 6805 2277 50  0000 C CNN
+F 2 "" H 6800 2450 50  0001 C CNN
+F 3 "" H 6800 2450 50  0001 C CNN
+	1    6800 2450
+	1    0    0    -1  
+$EndComp
+$Comp
+L power:+BATT #PWR028
+U 1 1 5D404205
+P 1150 1100
+F 0 "#PWR028" H 1150 950 50  0001 C CNN
+F 1 "+BATT" H 1165 1273 50  0000 C CNN
+F 2 "" H 1150 1100 50  0001 C CNN
+F 3 "" H 1150 1100 50  0001 C CNN
+	1    1150 1100
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	2900 1200 2900 1300
+Text HLabel 2400 1600 0    50   Input ~ 0
+MOTOR_REV
+Wire Wire Line
+	2400 1600 2500 1600
+Text HLabel 2400 1500 0    50   Input ~ 0
+MOTOR_FWD
+Wire Wire Line
+	2400 1500 2500 1500
+$Comp
+L huhnsfx-rescue:R-Device R15
+U 1 1 5D404986
+P 3600 2100
+F 0 "R15" H 3670 2146 50  0000 L CNN
+F 1 "0R2" H 3670 2055 50  0000 L CNN
+F 2 "Resistor_SMD:R_0603_1608Metric" V 3530 2100 50  0001 C CNN
+F 3 "~" H 3600 2100 50  0001 C CNN
+	1    3600 2100
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	3600 2350 3600 2250
+Wire Wire Line
+	3600 1800 3300 1800
+NoConn ~ 2500 1800
+$Comp
+L huhnsfx-rescue:C-Device C13
+U 1 1 5D4217F1
+P 1600 1650
+F 0 "C13" H 1715 1696 50  0000 L CNN
+F 1 "100nF" H 1715 1605 50  0000 L CNN
+F 2 "Capacitor_SMD:C_0603_1608Metric" H 1638 1500 50  0001 C CNN
+F 3 "~" H 1600 1650 50  0001 C CNN
+	1    1600 1650
+	1    0    0    -1  
+$EndComp
+$Comp
+L huhnsfx-rescue:C-Device C12
+U 1 1 5D421C43
+P 1150 1650
+F 0 "C12" H 1265 1696 50  0000 L CNN
+F 1 "47uF" H 1265 1605 50  0000 L CNN
+F 2 "Capacitor_SMD:C_1206_3216Metric" H 1188 1500 50  0001 C CNN
+F 3 "~" H 1150 1650 50  0001 C CNN
+	1    1150 1650
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	1150 1100 1150 1200
+Wire Wire Line
+	1150 1200 1600 1200
+Connection ~ 1150 1200
+Wire Wire Line
+	1150 1200 1150 1500
+Wire Wire Line
+	1600 1500 1600 1200
+Connection ~ 1600 1200
+Wire Wire Line
+	1600 1200 2900 1200
+Wire Wire Line
+	3300 1600 3400 1600
+Text Notes 1100 2550 0    50   ~ 0
+Bulk Capacitors
+Text HLabel 4500 2100 0    50   BiDi ~ 0
+MOTORP
+Text HLabel 3400 1600 2    50   BiDi ~ 0
+MOTORM
+$Comp
+L Analog_ADC:INA219AxDCN U7
+U 1 1 5EA8E52B
+P 5750 1850
+F 0 "U7" H 5500 2250 50  0000 C CNN
+F 1 "INA219AxDCN" H 6050 2250 50  0000 C CNN
+F 2 "Package_TO_SOT_SMD:SOT-23-8" H 6400 1500 50  0001 C CNN
+F 3 "http://www.ti.com/lit/ds/symlink/ina219.pdf" H 6100 1750 50  0001 C CNN
+	1    5750 1850
+	1    0    0    -1  
+$EndComp
+$Comp
+L Device:R R23
+U 1 1 5EA90DF3
+P 4600 1850
+F 0 "R23" H 4530 1804 50  0000 R CNN
+F 1 "0.1" H 4530 1895 50  0000 R CNN
+F 2 "Resistor_SMD:R_0603_1608Metric" V 4530 1850 50  0001 C CNN
+F 3 "~" H 4600 1850 50  0001 C CNN
+	1    4600 1850
+	-1   0    0    1   
+$EndComp
+Text Notes 6550 1050 0    50   ~ 0
+I2C Adress: 0x40
+Wire Wire Line
+	4850 1600 4850 1750
+Wire Wire Line
+	4850 1750 4950 1750
+Connection ~ 4600 1600
+Wire Wire Line
+	4600 1600 4600 1700
+Wire Wire Line
+	4600 1500 4600 1600
+Wire Wire Line
+	4600 1600 4850 1600
+Wire Wire Line
+	4950 1950 4850 1950
+Wire Wire Line
+	4850 1950 4850 2100
+Wire Wire Line
+	4850 2100 4600 2100
+Wire Wire Line
+	4600 2100 4600 2000
+Wire Wire Line
+	4500 2100 4600 2100
+Connection ~ 4600 2100
+Wire Wire Line
+	5750 2250 5750 2350
+Wire Wire Line
+	1150 2350 1600 2350
+Wire Wire Line
+	1150 1800 1150 2350
+Wire Wire Line
+	1600 1800 1600 2350
+Connection ~ 1600 2350
+Wire Wire Line
+	1600 2350 2900 2350
+Wire Wire Line
+	2900 2000 2900 2350
+Connection ~ 2900 2350
+Wire Wire Line
+	2900 2350 3600 2350
+Wire Wire Line
+	3600 1800 3600 1950
+Wire Wire Line
+	3300 1500 4600 1500
+Wire Wire Line
+	5750 2350 6250 2350
+Connection ~ 5750 2350
+Wire Wire Line
+	6250 2350 6250 2050
+Wire Wire Line
+	6250 2050 6150 2050
+Wire Wire Line
+	6150 1950 6250 1950
+Wire Wire Line
+	6250 1950 6250 2050
+Connection ~ 6250 2050
+Text HLabel 6250 1650 2    50   BiDi ~ 0
+SDA
+Wire Wire Line
+	6150 1650 6250 1650
+Text HLabel 6250 1750 2    50   Input ~ 0
+SCL
+Wire Wire Line
+	6250 1750 6150 1750
+Text Notes 3850 1900 0    50   ~ 0
+Shunt Resistor:\nERJ-3BWFR100V
+$Comp
+L Device:C C15
+U 1 1 5EA9DD35
+P 6800 1850
+F 0 "C15" H 6915 1896 50  0000 L CNN
+F 1 "100nF" H 6915 1805 50  0000 L CNN
+F 2 "Capacitor_SMD:C_0603_1608Metric" H 6838 1700 50  0001 C CNN
+F 3 "~" H 6800 1850 50  0001 C CNN
+	1    6800 1850
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	6800 1200 6800 1700
+Wire Wire Line
+	6250 2350 6800 2350
+Wire Wire Line
+	6800 2350 6800 2450
+Connection ~ 6250 2350
+Wire Wire Line
+	6800 2000 6800 2350
+Connection ~ 6800 2350
+$Comp
+L Device:R R24
+U 1 1 5EAA8CFF
+P 5100 1750
+F 0 "R24" V 4893 1750 50  0000 C CNN
+F 1 "10" V 4984 1750 50  0000 C CNN
+F 2 "Resistor_SMD:R_0603_1608Metric" V 5030 1750 50  0001 C CNN
+F 3 "~" H 5100 1750 50  0001 C CNN
+	1    5100 1750
+	0    1    1    0   
+$EndComp
+$Comp
+L Device:R R25
+U 1 1 5EAA92A6
+P 5100 1950
+F 0 "R25" V 4900 1950 50  0000 C CNN
+F 1 "10" V 5000 1950 50  0000 C CNN
+F 2 "Resistor_SMD:R_0603_1608Metric" V 5030 1950 50  0001 C CNN
+F 3 "~" H 5100 1950 50  0001 C CNN
+	1    5100 1950
+	0    -1   -1   0   
+$EndComp
+Wire Wire Line
+	3600 2350 5750 2350
+Connection ~ 3600 2350
+Wire Wire Line
+	5250 1950 5350 1950
+Wire Wire Line
+	5350 1750 5250 1750
+$Comp
+L power:+3V3 #PWR0113
+U 1 1 5EB26807
+P 5750 950
+F 0 "#PWR0113" H 5750 800 50  0001 C CNN
+F 1 "+3V3" H 5765 1123 50  0000 C CNN
+F 2 "" H 5750 950 50  0001 C CNN
+F 3 "" H 5750 950 50  0001 C CNN
+	1    5750 950 
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	5750 950  5750 1200
+Wire Wire Line
+	6800 1200 5750 1200
+Connection ~ 5750 1200
+Wire Wire Line
+	5750 1200 5750 1450
+$EndSCHEMATC

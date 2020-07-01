@@ -1,0 +1,7 @@
+(sym_lib_table
+  (lib (name mic5239-3.3ymm)(type Legacy)(uri ${KIPRJMOD}/lib/mic5239-3.3ymm.lib)(options "")(descr ""))
+  (lib (name rv3029c2)(type Legacy)(uri ${KIPRJMOD}/lib/rv3029c2.lib)(options "")(descr ""))
+  (lib (name s2lp)(type Legacy)(uri ${KIPRJMOD}/lib/s2lp.lib)(options "")(descr ""))
+  (lib (name balf-spi2-01d3)(type Legacy)(uri ${KIPRJMOD}/lib/balf-spi2-01d3.lib)(options "")(descr ""))
+  (lib (name huhnsfx-rescue)(type Legacy)(uri ${KIPRJMOD}/huhnsfx-rescue.lib)(options "")(descr ""))
+)

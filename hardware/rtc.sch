@@ -1,0 +1,331 @@
+EESchema Schematic File Version 4
+EELAYER 30 0
+EELAYER END
+$Descr A4 11693 8268
+encoding utf-8
+Sheet 3 5
+Title ""
+Date ""
+Rev ""
+Comp ""
+Comment1 ""
+Comment2 ""
+Comment3 ""
+Comment4 ""
+$EndDescr
+$Comp
+L rv3029c2:RV-3029-C2 U?
+U 1 1 5D3F4D68
+P 3200 2000
+AR Path="/5D3F4D68" Ref="U?"  Part="1" 
+AR Path="/5D3F2DAA/5D3F4D68" Ref="U4"  Part="1" 
+F 0 "U4" H 3550 2300 60  0000 C CNN
+F 1 "RV-3029-C2" H 3550 1650 60  0000 C CNN
+F 2 "huhnsfx:rv3029" H 3100 1950 60  0001 C CNN
+F 3 "" H 3100 1950 60  0000 C CNN
+	1    3200 2000
+	1    0    0    -1  
+$EndComp
+$Comp
+L power:GND #PWR?
+U 1 1 5D3F4D6E
+P 5450 2650
+AR Path="/5D3F4D6E" Ref="#PWR?"  Part="1" 
+AR Path="/5D3F2DAA/5D3F4D6E" Ref="#PWR027"  Part="1" 
+F 0 "#PWR027" H 5450 2400 50  0001 C CNN
+F 1 "GND" H 5455 2477 50  0000 C CNN
+F 2 "" H 5450 2650 50  0001 C CNN
+F 3 "" H 5450 2650 50  0001 C CNN
+	1    5450 2650
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	3200 2550 3200 2450
+NoConn ~ 3800 2150
+Wire Wire Line
+	3200 2550 2500 2550
+Wire Wire Line
+	2500 2550 2500 2150
+Wire Wire Line
+	2500 2150 2600 2150
+$Comp
+L huhnsfx-rescue:C-Device C?
+U 1 1 5D3F4D7B
+P 1550 1950
+AR Path="/5D3F4D7B" Ref="C?"  Part="1" 
+AR Path="/5D3F2DAA/5D3F4D7B" Ref="C11"  Part="1" 
+F 0 "C11" H 1665 1996 50  0000 L CNN
+F 1 "10nF" H 1665 1905 50  0000 L CNN
+F 2 "Capacitor_SMD:C_0603_1608Metric" H 1588 1800 50  0001 C CNN
+F 3 "~" H 1550 1950 50  0001 C CNN
+	1    1550 1950
+	1    0    0    -1  
+$EndComp
+$Comp
+L power:+3V3 #PWR?
+U 1 1 5D3F4D81
+P 1550 1150
+AR Path="/5D3F4D81" Ref="#PWR?"  Part="1" 
+AR Path="/5D3F2DAA/5D3F4D81" Ref="#PWR026"  Part="1" 
+F 0 "#PWR026" H 1550 1000 50  0001 C CNN
+F 1 "+3V3" H 1565 1323 50  0000 C CNN
+F 2 "" H 1550 1150 50  0001 C CNN
+F 3 "" H 1550 1150 50  0001 C CNN
+	1    1550 1150
+	1    0    0    -1  
+$EndComp
+$Comp
+L huhnsfx-rescue:Battery_Cell-Device BT?
+U 1 1 5D3F4D87
+P 1950 2000
+AR Path="/5D3F4D87" Ref="BT?"  Part="1" 
+AR Path="/5D3F2DAA/5D3F4D87" Ref="BT2"  Part="1" 
+F 0 "BT2" H 2068 2096 50  0000 L CNN
+F 1 "3V" H 2068 2005 50  0000 L CNN
+F 2 "Connector_Molex:Molex_PicoBlade_53047-0210_1x02_P1.25mm_Vertical" V 1950 2060 50  0001 C CNN
+F 3 "~" V 1950 2060 50  0001 C CNN
+	1    1950 2000
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	1550 2100 1550 2550
+Wire Wire Line
+	1550 2550 1950 2550
+Connection ~ 2500 2550
+Wire Wire Line
+	1950 2100 1950 2550
+Wire Wire Line
+	3100 1450 3100 1550
+Wire Wire Line
+	1950 1450 3100 1450
+Wire Wire Line
+	1950 2550 2500 2550
+Connection ~ 1950 2550
+Text HLabel 2500 1850 0    50   Input ~ 0
+SCL
+Wire Wire Line
+	2500 1850 2600 1850
+Text HLabel 2500 1950 0    50   BiDi ~ 0
+SDA
+Wire Wire Line
+	2500 1950 2600 1950
+$Comp
+L huhnsfx-rescue:BSS138-Transistor_FET Q3
+U 1 1 5D3F6EF6
+P 5350 2150
+F 0 "Q3" H 5556 2196 50  0000 L CNN
+F 1 "BSS138" H 5556 2105 50  0000 L CNN
+F 2 "Package_TO_SOT_SMD:SOT-23" H 5550 2075 50  0001 L CIN
+F 3 "https://www.fairchildsemi.com/datasheets/BS/BSS138.pdf" H 5350 2150 50  0001 L CNN
+	1    5350 2150
+	1    0    0    -1  
+$EndComp
+$Comp
+L huhnsfx-rescue:BSS84-Transistor_FET Q2
+U 1 1 5D40139F
+P 5550 1550
+F 0 "Q2" H 5756 1596 50  0000 L CNN
+F 1 "BSS84" H 5756 1505 50  0000 L CNN
+F 2 "Package_TO_SOT_SMD:SOT-23" H 5750 1475 50  0001 L CIN
+F 3 "http://assets.nexperia.com/documents/data-sheet/BSS84.pdf" H 5550 1550 50  0001 L CNN
+	1    5550 1550
+	-1   0    0    1   
+$EndComp
+Wire Wire Line
+	5450 1750 5450 1850
+Connection ~ 3200 2550
+Wire Wire Line
+	1550 1150 1550 1250
+Wire Wire Line
+	1550 1250 3300 1250
+Wire Wire Line
+	3300 1250 3300 1550
+Connection ~ 1550 1250
+Wire Wire Line
+	1550 1250 1550 1800
+Wire Wire Line
+	5450 1250 5450 1350
+Text HLabel 5900 1850 2    50   Output ~ 0
+INT
+Wire Wire Line
+	5900 1850 5450 1850
+Connection ~ 5450 1850
+Wire Wire Line
+	5450 1850 5450 1950
+$Comp
+L power:PWR_FLAG #FLG03
+U 1 1 5D5AA744
+P 1950 1150
+F 0 "#FLG03" H 1950 1225 50  0001 C CNN
+F 1 "PWR_FLAG" H 1950 1323 50  0000 C CNN
+F 2 "" H 1950 1150 50  0001 C CNN
+F 3 "~" H 1950 1150 50  0001 C CNN
+	1    1950 1150
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	1950 1150 1950 1450
+Connection ~ 1950 1450
+Wire Wire Line
+	1950 1450 1950 1800
+Wire Wire Line
+	3800 1850 3950 1850
+Text Label 3950 1850 2    50   ~ 0
+~INT
+Text Label 5900 1550 2    50   ~ 0
+~INT
+Text Label 5000 2150 0    50   ~ 0
+~INT
+Wire Wire Line
+	5900 1550 5750 1550
+$Comp
+L power:GND #PWR?
+U 1 1 5EAC7F32
+P 3200 2650
+AR Path="/5EAC7F32" Ref="#PWR?"  Part="1" 
+AR Path="/5D3F2DAA/5EAC7F32" Ref="#PWR0103"  Part="1" 
+F 0 "#PWR0103" H 3200 2400 50  0001 C CNN
+F 1 "GND" H 3205 2477 50  0000 C CNN
+F 2 "" H 3200 2650 50  0001 C CNN
+F 3 "" H 3200 2650 50  0001 C CNN
+	1    3200 2650
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	3200 2650 3200 2550
+Wire Wire Line
+	5450 2350 5450 2650
+$Comp
+L power:+3V3 #PWR?
+U 1 1 5EACA0EB
+P 4800 1150
+AR Path="/5EACA0EB" Ref="#PWR?"  Part="1" 
+AR Path="/5D3F2DAA/5EACA0EB" Ref="#PWR0104"  Part="1" 
+F 0 "#PWR0104" H 4800 1000 50  0001 C CNN
+F 1 "+3V3" H 4815 1323 50  0000 C CNN
+F 2 "" H 4800 1150 50  0001 C CNN
+F 3 "" H 4800 1150 50  0001 C CNN
+	1    4800 1150
+	1    0    0    -1  
+$EndComp
+$Comp
+L Device:R R22
+U 1 1 5EACB051
+P 4800 1550
+F 0 "R22" H 4870 1596 50  0000 L CNN
+F 1 "10K" H 4870 1505 50  0000 L CNN
+F 2 "Resistor_SMD:R_0603_1608Metric" V 4730 1550 50  0001 C CNN
+F 3 "~" H 4800 1550 50  0001 C CNN
+	1    4800 1550
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	4800 1150 4800 1250
+Wire Wire Line
+	5450 1250 4800 1250
+Connection ~ 4800 1250
+Wire Wire Line
+	4800 1250 4800 1400
+$Comp
+L Sensor:BME280 U6
+U 1 1 5EBD6BCD
+P 2800 4200
+F 0 "U6" H 2371 4246 50  0000 R CNN
+F 1 "BME280" H 2371 4155 50  0000 R CNN
+F 2 "Package_LGA:Bosch_LGA-8_2.5x2.5mm_P0.65mm_ClockwisePinNumbering" H 4300 3750 50  0001 C CNN
+F 3 "https://ae-bst.resource.bosch.com/media/_tech/media/datasheets/BST-BME280-DS002.pdf" H 2800 4000 50  0001 C CNN
+	1    2800 4200
+	1    0    0    -1  
+$EndComp
+$Comp
+L power:+3V3 #PWR0105
+U 1 1 5EBD738E
+P 1600 3400
+F 0 "#PWR0105" H 1600 3250 50  0001 C CNN
+F 1 "+3V3" H 1615 3573 50  0000 C CNN
+F 2 "" H 1600 3400 50  0001 C CNN
+F 3 "" H 1600 3400 50  0001 C CNN
+	1    1600 3400
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	2700 3500 2700 3600
+Wire Wire Line
+	2700 3500 2900 3500
+Wire Wire Line
+	2900 3500 2900 3600
+Connection ~ 2700 3500
+$Comp
+L power:GND #PWR0106
+U 1 1 5EBD96F2
+P 3600 5000
+F 0 "#PWR0106" H 3600 4750 50  0001 C CNN
+F 1 "GND" H 3605 4827 50  0000 C CNN
+F 2 "" H 3600 5000 50  0001 C CNN
+F 3 "" H 3600 5000 50  0001 C CNN
+	1    3600 5000
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	2700 4800 2700 4900
+Wire Wire Line
+	2700 4900 2900 4900
+Connection ~ 2900 4900
+Wire Wire Line
+	2900 4900 2900 4800
+Wire Wire Line
+	3400 4500 3500 4500
+Wire Wire Line
+	3500 3500 2900 3500
+Connection ~ 2900 3500
+Wire Wire Line
+	3500 3500 3500 4500
+Wire Wire Line
+	3400 3900 3600 3900
+Wire Wire Line
+	3600 3900 3600 4900
+Wire Wire Line
+	3600 4900 2900 4900
+Wire Wire Line
+	3600 4900 3600 5000
+Connection ~ 3600 4900
+Text HLabel 3700 4100 2    50   Input ~ 0
+SCL
+Wire Wire Line
+	3700 4100 3400 4100
+Text HLabel 3700 4300 2    50   BiDi ~ 0
+SDA
+Wire Wire Line
+	3700 4300 3400 4300
+$Comp
+L Device:C C14
+U 1 1 5EBE0877
+P 1600 4200
+F 0 "C14" H 1715 4246 50  0000 L CNN
+F 1 "100nF" H 1715 4155 50  0000 L CNN
+F 2 "Capacitor_SMD:C_0603_1608Metric" H 1638 4050 50  0001 C CNN
+F 3 "~" H 1600 4200 50  0001 C CNN
+	1    1600 4200
+	1    0    0    -1  
+$EndComp
+Connection ~ 2700 4900
+Wire Wire Line
+	1600 4350 1600 4900
+Wire Wire Line
+	1600 3400 1600 3500
+Wire Wire Line
+	1600 3500 2700 3500
+Connection ~ 1600 3500
+Wire Wire Line
+	1600 3500 1600 4050
+Wire Wire Line
+	1600 4900 2700 4900
+Text Notes 4150 4200 0    50   ~ 0
+Address: 0x76
+Text Notes 3550 2650 0    50   ~ 0
+Address: 0x51
+Wire Wire Line
+	4800 2150 5150 2150
+Wire Wire Line
+	4800 1700 4800 2150
+$EndSCHEMATC

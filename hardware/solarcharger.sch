@@ -1,0 +1,564 @@
+EESchema Schematic File Version 4
+EELAYER 30 0
+EELAYER END
+$Descr A4 11693 8268
+encoding utf-8
+Sheet 2 5
+Title ""
+Date ""
+Rev ""
+Comp ""
+Comment1 ""
+Comment2 ""
+Comment3 ""
+Comment4 ""
+$EndDescr
+$Comp
+L huhnsfx-rescue:LT3652EMSE-Battery_Management U3
+U 1 1 5D389DC2
+P 4750 2400
+AR Path="/5D389DC2" Ref="U3"  Part="1" 
+AR Path="/5D389AA1/5D389DC2" Ref="U3"  Part="1" 
+F 0 "U3" H 5100 2850 50  0000 C CNN
+F 1 "LT3652EMSE" H 5050 1950 50  0000 C CNN
+F 2 "Package_SO:MSOP-12-1EP_3x4mm_P0.65mm_EP1.65x2.85mm" H 4750 1800 50  0001 C CNN
+F 3 "https://www.analog.com/media/en/technical-documentation/data-sheets/3652fe.pdf" H 5350 1600 50  0001 C CNN
+	1    4750 2400
+	1    0    0    -1  
+$EndComp
+$Comp
+L pspice:DIODE D1
+U 1 1 5D38A082
+P 1800 1800
+F 0 "D1" H 1800 2065 50  0000 C CNN
+F 1 "MBRS140" H 1800 1974 50  0000 C CNN
+F 2 "Diode_SMD:D_SMB" H 1800 1800 50  0001 C CNN
+F 3 "~" H 1800 1800 50  0001 C CNN
+	1    1800 1800
+	1    0    0    -1  
+$EndComp
+$Comp
+L huhnsfx-rescue:R-Device R8
+U 1 1 5D38A399
+P 2550 2050
+F 0 "R8" H 2620 2096 50  0000 L CNN
+F 1 "499K" H 2620 2005 50  0000 L CNN
+F 2 "Resistor_SMD:R_0603_1608Metric" V 2480 2050 50  0001 C CNN
+F 3 "~" H 2550 2050 50  0001 C CNN
+	1    2550 2050
+	1    0    0    -1  
+$EndComp
+$Comp
+L huhnsfx-rescue:R-Device R9
+U 1 1 5D38AA52
+P 2550 2550
+F 0 "R9" H 2620 2596 50  0000 L CNN
+F 1 "100K" H 2620 2505 50  0000 L CNN
+F 2 "Resistor_SMD:R_0603_1608Metric" V 2480 2550 50  0001 C CNN
+F 3 "~" H 2550 2550 50  0001 C CNN
+	1    2550 2550
+	1    0    0    -1  
+$EndComp
+$Comp
+L huhnsfx-rescue:C-Device C6
+U 1 1 5D38B66F
+P 2150 2700
+F 0 "C6" H 2265 2746 50  0000 L CNN
+F 1 "10µF" H 2265 2655 50  0000 L CNN
+F 2 "Capacitor_SMD:C_0603_1608Metric" H 2188 2550 50  0001 C CNN
+F 3 "~" H 2150 2700 50  0001 C CNN
+	1    2150 2700
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	2550 1800 2550 1900
+Wire Wire Line
+	4750 1900 4750 1800
+Wire Wire Line
+	3850 2100 3750 2100
+Wire Wire Line
+	3750 2100 3750 1800
+$Comp
+L huhnsfx-rescue:C-Device C7
+U 1 1 5D39A742
+P 4150 3150
+F 0 "C7" H 4265 3196 50  0000 L CNN
+F 1 "4.7µF" H 4265 3105 50  0000 L CNN
+F 2 "Capacitor_SMD:C_0603_1608Metric" H 4188 3000 50  0001 C CNN
+F 3 "~" H 4150 3150 50  0001 C CNN
+	1    4150 3150
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	2000 1800 2150 1800
+$Comp
+L power:GND #PWR023
+U 1 1 5D39BB4C
+P 6050 3700
+F 0 "#PWR023" H 6050 3450 50  0001 C CNN
+F 1 "GND" H 6055 3527 50  0000 C CNN
+F 2 "" H 6050 3700 50  0001 C CNN
+F 3 "" H 6050 3700 50  0001 C CNN
+	1    6050 3700
+	1    0    0    -1  
+$EndComp
+$Comp
+L huhnsfx-rescue:R-Device R11
+U 1 1 5D39BF12
+P 5500 2850
+F 0 "R11" H 5570 2896 50  0000 L CNN
+F 1 "1020K" H 5570 2805 50  0000 L CNN
+F 2 "Resistor_SMD:R_0603_1608Metric" V 5430 2850 50  0001 C CNN
+F 3 "~" H 5500 2850 50  0001 C CNN
+	1    5500 2850
+	1    0    0    -1  
+$EndComp
+$Comp
+L huhnsfx-rescue:R-Device R12
+U 1 1 5D39C258
+P 5500 3350
+F 0 "R12" H 5570 3396 50  0000 L CNN
+F 1 "332K" H 5570 3305 50  0000 L CNN
+F 2 "Resistor_SMD:R_0603_1608Metric" V 5430 3350 50  0001 C CNN
+F 3 "~" H 5500 3350 50  0001 C CNN
+	1    5500 3350
+	1    0    0    -1  
+$EndComp
+$Comp
+L huhnsfx-rescue:Thermistor_NTC-Device TH1
+U 1 1 5D3A2C25
+P 6050 3350
+F 0 "TH1" H 6200 3300 50  0000 L CNN
+F 1 "NCP18XH103" H 6200 3400 50  0000 L CNN
+F 2 "Resistor_SMD:R_0603_1608Metric" H 6050 3400 50  0001 C CNN
+F 3 "~" H 6050 3400 50  0001 C CNN
+	1    6050 3350
+	1    0    0    -1  
+$EndComp
+$Comp
+L huhnsfx-rescue:R-Device R13
+U 1 1 5D3A56A1
+P 6050 2850
+F 0 "R13" V 6150 2850 50  0000 C CNN
+F 1 "910" V 6050 2850 50  0000 C CNN
+F 2 "Resistor_SMD:R_0603_1608Metric" V 5980 2850 50  0001 C CNN
+F 3 "~" H 6050 2850 50  0001 C CNN
+	1    6050 2850
+	-1   0    0    1   
+$EndComp
+Wire Wire Line
+	6050 3500 6050 3600
+Wire Wire Line
+	5500 3600 5500 3500
+Wire Wire Line
+	2150 2550 2150 1800
+Connection ~ 2150 1800
+Wire Wire Line
+	2150 1800 2550 1800
+Wire Wire Line
+	2550 3600 2150 3600
+$Comp
+L huhnsfx-rescue:R-Device R10
+U 1 1 5D3BB76C
+P 3250 2050
+F 0 "R10" H 3320 2096 50  0000 L CNN
+F 1 "1M" H 3320 2005 50  0000 L CNN
+F 2 "Resistor_SMD:R_0603_1608Metric" V 3180 2050 50  0001 C CNN
+F 3 "~" H 3250 2050 50  0001 C CNN
+	1    3250 2050
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	2550 2200 2550 2300
+Wire Wire Line
+	2550 1800 3750 1800
+Connection ~ 2550 1800
+Connection ~ 2550 2300
+Wire Wire Line
+	2550 2300 2550 2400
+Connection ~ 2550 3600
+Text HLabel 3150 2500 0    50   Output ~ 0
+~CHRG
+$Comp
+L huhnsfx-rescue:L-Device L1
+U 1 1 5D3D08AF
+P 8100 2800
+F 0 "L1" H 7950 2850 50  0000 L CNN
+F 1 "WURTH 7447779122" H 7250 2750 50  0000 L CNN
+F 2 "Inductor_SMD:L_Wuerth_WE-PD-Typ-7345" H 8100 2800 50  0001 C CNN
+F 3 "~" H 8100 2800 50  0001 C CNN
+	1    8100 2800
+	1    0    0    -1  
+$EndComp
+$Comp
+L huhnsfx-rescue:C-Device C9
+U 1 1 5D3D32C1
+P 9450 2750
+F 0 "C9" H 9565 2796 50  0000 L CNN
+F 1 "10µF" H 9565 2705 50  0000 L CNN
+F 2 "Capacitor_SMD:C_0603_1608Metric" H 9488 2600 50  0001 C CNN
+F 3 "~" H 9450 2750 50  0001 C CNN
+	1    9450 2750
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	2150 2850 2150 3600
+Wire Wire Line
+	2550 2700 2550 3600
+Wire Wire Line
+	6050 3000 6050 3200
+Wire Wire Line
+	6050 2700 6050 2600
+$Comp
+L huhnsfx-rescue:C-Device C10
+U 1 1 5D3F034F
+P 9900 2750
+F 0 "C10" H 10015 2796 50  0000 L CNN
+F 1 "100µF" H 10015 2705 50  0000 L CNN
+F 2 "Capacitor_SMD:CP_Elec_6.3x3" H 9938 2600 50  0001 C CNN
+F 3 "~" H 9900 2750 50  0001 C CNN
+	1    9900 2750
+	1    0    0    -1  
+$EndComp
+$Comp
+L huhnsfx-rescue:MBR340-Diode D2
+U 1 1 5D3F58F2
+P 8100 3300
+F 0 "D2" V 8200 3100 50  0000 L CNN
+F 1 "MBRS340" V 8100 2850 50  0000 L CNN
+F 2 "Diode_SMD:D_SMC" H 8100 3125 50  0001 C CNN
+F 3 "http://www.onsemi.com/pub_link/Collateral/MBR340-D.PDF" H 8100 3300 50  0001 C CNN
+	1    8100 3300
+	0    1    1    0   
+$EndComp
+Wire Wire Line
+	5500 3000 5500 3100
+Connection ~ 5500 3600
+Wire Wire Line
+	5500 3600 6050 3600
+Wire Wire Line
+	5500 2500 5500 2700
+Wire Wire Line
+	5250 2500 5500 2500
+Wire Wire Line
+	5250 2700 5350 2700
+Wire Wire Line
+	5350 2700 5350 3100
+Wire Wire Line
+	5350 3100 5500 3100
+Connection ~ 5500 3100
+Wire Wire Line
+	5500 3100 5500 3200
+Wire Wire Line
+	5250 2600 6050 2600
+Wire Wire Line
+	4750 2900 4750 3600
+Connection ~ 4750 3600
+Wire Wire Line
+	4750 3600 5500 3600
+Wire Wire Line
+	5250 2400 5650 2400
+Text Label 5650 2400 2    50   ~ 0
+SENSE
+Wire Wire Line
+	5250 2300 5650 2300
+Text Label 5650 2300 2    50   ~ 0
+BOOST
+Wire Wire Line
+	5250 2100 5650 2100
+Text Label 5650 2100 2    50   ~ 0
+SWITCH
+Wire Wire Line
+	6050 3600 6050 3700
+Connection ~ 6050 3600
+Connection ~ 2150 3600
+Wire Wire Line
+	1450 1800 1600 1800
+Wire Wire Line
+	1450 3600 2150 3600
+$Comp
+L power:+BATT #PWR022
+U 1 1 5D4D867F
+P 6050 1550
+F 0 "#PWR022" H 6050 1400 50  0001 C CNN
+F 1 "+BATT" H 6065 1723 50  0000 C CNN
+F 2 "" H 6050 1550 50  0001 C CNN
+F 3 "" H 6050 1550 50  0001 C CNN
+	1    6050 1550
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	5500 2500 6050 2500
+Connection ~ 5500 2500
+$Comp
+L huhnsfx-rescue:R-Device R14
+U 1 1 5D4E2E2C
+P 8100 2300
+F 0 "R14" H 8170 2346 50  0000 L CNN
+F 1 "0.1" H 8170 2255 50  0000 L CNN
+F 2 "Resistor_SMD:R_0603_1608Metric" V 8030 2300 50  0001 C CNN
+F 3 "~" H 8100 2300 50  0001 C CNN
+	1    8100 2300
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	8100 2650 8100 2550
+Wire Wire Line
+	8100 2550 7550 2550
+Connection ~ 8100 2550
+Wire Wire Line
+	8100 2550 8100 2450
+Text Label 7550 2550 0    50   ~ 0
+SENSE
+Wire Wire Line
+	8100 2950 8100 3050
+Wire Wire Line
+	8100 3050 7550 3050
+Text Label 7550 3050 0    50   ~ 0
+SWITCH
+$Comp
+L power:+BATT #PWR024
+U 1 1 5D4EB706
+P 8100 1950
+F 0 "#PWR024" H 8100 1800 50  0001 C CNN
+F 1 "+BATT" H 8115 2123 50  0000 C CNN
+F 2 "" H 8100 1950 50  0001 C CNN
+F 3 "" H 8100 1950 50  0001 C CNN
+	1    8100 1950
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	8100 1950 8100 2050
+Wire Wire Line
+	8100 3150 8100 3050
+Connection ~ 8100 3050
+$Comp
+L power:GND #PWR025
+U 1 1 5D4F566A
+P 10450 3650
+F 0 "#PWR025" H 10450 3400 50  0001 C CNN
+F 1 "GND" H 10455 3477 50  0000 C CNN
+F 2 "" H 10450 3650 50  0001 C CNN
+F 3 "" H 10450 3650 50  0001 C CNN
+	1    10450 3650
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	8100 3450 8100 3550
+Wire Wire Line
+	8750 2650 8750 2550
+$Comp
+L huhnsfx-rescue:BZX84Cxx-Diode D3
+U 1 1 5D3CA23D
+P 8750 2400
+AR Path="/5D3CA23D" Ref="D3"  Part="1" 
+AR Path="/5D389AA1/5D3CA23D" Ref="D3"  Part="1" 
+F 0 "D3" H 8750 2150 50  0000 C CNN
+F 1 "BZX84C6V2L" H 8750 2250 50  0000 C CNN
+F 2 "Diode_SMD:D_SOT-23_ANK" H 8750 2225 50  0001 C CNN
+F 3 "https://diotec.com/tl_files/diotec/files/pdf/datasheets/bzx84c2v4.pdf" H 8750 2400 50  0001 C CNN
+	1    8750 2400
+	0    1    1    0   
+$EndComp
+$Comp
+L huhnsfx-rescue:1N914-Diode D4
+U 1 1 5D3C97BC
+P 8750 2800
+AR Path="/5D3C97BC" Ref="D4"  Part="1" 
+AR Path="/5D389AA1/5D3C97BC" Ref="D4"  Part="1" 
+F 0 "D4" H 8750 3050 50  0000 C CNN
+F 1 "1N914" H 8750 2950 50  0000 C CNN
+F 2 "Diode_SMD:D_SOD-323F" H 8750 2625 50  0001 C CNN
+F 3 "http://www.vishay.com/docs/85622/1n914.pdf" H 8750 2800 50  0001 C CNN
+	1    8750 2800
+	0    -1   -1   0   
+$EndComp
+Wire Wire Line
+	8100 2050 8750 2050
+Connection ~ 8100 2050
+Wire Wire Line
+	8100 2050 8100 2150
+Wire Wire Line
+	8750 2050 8750 2250
+$Comp
+L huhnsfx-rescue:C-Device C8
+U 1 1 5D515DA0
+P 8400 3050
+F 0 "C8" V 8250 3050 50  0000 C CNN
+F 1 "1µF" V 8550 3050 50  0000 C CNN
+F 2 "Capacitor_SMD:C_0603_1608Metric" H 8438 2900 50  0001 C CNN
+F 3 "~" H 8400 3050 50  0001 C CNN
+	1    8400 3050
+	0    1    1    0   
+$EndComp
+Wire Wire Line
+	8100 3050 8250 3050
+Wire Wire Line
+	8550 3050 8750 3050
+Wire Wire Line
+	8750 3050 8750 2950
+Wire Wire Line
+	8750 3050 9100 3050
+Connection ~ 8750 3050
+Text Label 9100 3050 2    50   ~ 0
+BOOST
+Wire Wire Line
+	8100 3550 9450 3550
+Wire Wire Line
+	10450 3550 10450 3050
+Wire Wire Line
+	9900 2900 9900 3550
+Connection ~ 9900 3550
+Wire Wire Line
+	9900 3550 10450 3550
+Wire Wire Line
+	9450 2900 9450 3550
+Connection ~ 9450 3550
+Wire Wire Line
+	9450 3550 9900 3550
+Wire Wire Line
+	8750 2050 9450 2050
+Wire Wire Line
+	9450 2050 9450 2600
+Connection ~ 8750 2050
+Wire Wire Line
+	9900 2600 9900 2050
+Wire Wire Line
+	9900 2050 9450 2050
+Connection ~ 9450 2050
+Wire Wire Line
+	10450 2050 9900 2050
+Connection ~ 9900 2050
+Wire Wire Line
+	10450 3550 10450 3650
+Connection ~ 10450 3550
+$Comp
+L power:PWR_FLAG #FLG02
+U 1 1 5D59B7C7
+P 10550 3050
+F 0 "#FLG02" H 10550 3125 50  0001 C CNN
+F 1 "PWR_FLAG" V 10550 3178 50  0000 L CNN
+F 2 "" H 10550 3050 50  0001 C CNN
+F 3 "~" H 10550 3050 50  0001 C CNN
+	1    10550 3050
+	0    1    1    0   
+$EndComp
+Wire Wire Line
+	10550 3050 10450 3050
+Connection ~ 10450 3050
+$Comp
+L power:PWR_FLAG #FLG01
+U 1 1 5D5A5222
+P 2150 1700
+F 0 "#FLG01" H 2150 1775 50  0001 C CNN
+F 1 "PWR_FLAG" H 2150 1873 50  0000 C CNN
+F 2 "" H 2150 1700 50  0001 C CNN
+F 3 "~" H 2150 1700 50  0001 C CNN
+	1    2150 1700
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	2150 1700 2150 1800
+Text HLabel 1350 2600 0    50   BiDi ~ 0
+SOLARP
+Wire Wire Line
+	1350 2600 1450 2600
+Wire Wire Line
+	1450 1800 1450 2600
+Text HLabel 1350 2800 0    50   BiDi ~ 0
+SOLARM
+Wire Wire Line
+	1350 2800 1450 2800
+Wire Wire Line
+	1450 2800 1450 3600
+Text HLabel 10550 2650 2    50   BiDi ~ 0
+BATTP
+Wire Wire Line
+	10550 2650 10450 2650
+Wire Wire Line
+	10450 2050 10450 2650
+Text HLabel 10550 2850 2    50   BiDi ~ 0
+BATTM
+Wire Wire Line
+	10550 2850 10450 2850
+Wire Wire Line
+	10450 2850 10450 3050
+Wire Wire Line
+	6050 1550 6050 2500
+$Comp
+L power:+3V3 #PWR0101
+U 1 1 5D7BF420
+P 3550 1550
+F 0 "#PWR0101" H 3550 1400 50  0001 C CNN
+F 1 "+3V3" H 3565 1723 50  0000 C CNN
+F 2 "" H 3550 1550 50  0001 C CNN
+F 3 "" H 3550 1550 50  0001 C CNN
+	1    3550 1550
+	1    0    0    -1  
+$EndComp
+Text HLabel 3150 2600 0    50   Output ~ 0
+~FAULT
+$Comp
+L huhnsfx-rescue:R-Device R16
+U 1 1 5D7E4752
+P 3550 2050
+F 0 "R16" H 3620 2096 50  0000 L CNN
+F 1 "1M" H 3620 2005 50  0000 L CNN
+F 2 "Resistor_SMD:R_0603_1608Metric" V 3480 2050 50  0001 C CNN
+F 3 "~" H 3550 2050 50  0001 C CNN
+	1    3550 2050
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	3150 2500 3250 2500
+Wire Wire Line
+	3250 2200 3250 2500
+Connection ~ 3250 2500
+Wire Wire Line
+	3150 2600 3550 2600
+Wire Wire Line
+	3550 2200 3550 2600
+Connection ~ 3550 2600
+Wire Wire Line
+	3250 1900 3250 1650
+Wire Wire Line
+	3250 1650 3550 1650
+Wire Wire Line
+	3550 1650 3550 1550
+Wire Wire Line
+	3550 1650 3550 1900
+Connection ~ 3550 1650
+$Comp
+L Device:R R21
+U 1 1 5EA8A7E9
+P 4000 2100
+F 0 "R21" V 3793 2100 50  0000 C CNN
+F 1 "1M" V 3884 2100 50  0000 C CNN
+F 2 "Resistor_SMD:R_0603_1608Metric" V 3930 2100 50  0001 C CNN
+F 3 "~" H 4000 2100 50  0001 C CNN
+	1    4000 2100
+	0    1    1    0   
+$EndComp
+Wire Wire Line
+	3750 1800 4750 1800
+Connection ~ 3750 1800
+Wire Wire Line
+	2550 2300 4250 2300
+Wire Wire Line
+	4250 2100 4150 2100
+Wire Wire Line
+	3250 2500 4250 2500
+Wire Wire Line
+	3550 2600 4250 2600
+Wire Wire Line
+	4250 2700 4150 2700
+Wire Wire Line
+	4150 2700 4150 3000
+Wire Wire Line
+	2550 3600 4150 3600
+Wire Wire Line
+	4150 3300 4150 3600
+Connection ~ 4150 3600
+Wire Wire Line
+	4150 3600 4750 3600
+$EndSCHEMATC
