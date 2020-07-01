@@ -1,1 +1,3 @@
 hardware/*bak
+firmware/build
+firmware/sdkconfig.old

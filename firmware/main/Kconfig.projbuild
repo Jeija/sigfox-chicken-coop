@@ -1,0 +1,87 @@
+menu "Chicken Door Configuration"
+
+	config GPIO_BUTTON_UP
+		int "Up Button GPIO"
+		range 0 39
+		default 34
+		help
+			GPIO number (IOxx) of up button.
+
+	config GPIO_BUTTON_DOWN
+		int "Down Button GPIO"
+		range 0 39
+		default 35
+		help
+			GPIO number (IOxx) of down button.
+
+	config GPIO_MOTOR_UP
+		int "Motor Up GPIO"
+		range 0 39
+		default 21
+		help
+			GPIO number (IOxx) of motor up output.
+
+	config GPIO_MOTOR_DOWN
+		int "Motor Down GPIO"
+		range 0 39
+		default 22
+		help
+			GPIO number (IOxx) of motor down output.
+
+	config GPIO_RTC_INT
+		int "RTC INT GPIO"
+		range 0 39
+		default 25
+		help
+			GPIO number (IOxx) of RTC intterupt input.
+
+	config GPIO_REED
+		int "Reed GPIO"
+		range 0 39
+		default 2
+		help
+			GPIO number (IOxx) of reed contact input.
+
+	config GPIO_I2C_SDA
+		int "I2C SDA GPIO"
+		range 0 39
+		default 26
+		help
+			GPIO number (IOxx) of I2C bus SDA.
+
+	config GPIO_I2C_SCL
+		int "I2C SCL GPIO"
+		range 0 39
+		default 27
+		help
+			GPIO number (IOxx) of I2C bus SCL.
+
+	config GPIO_SOLAR_CHARGE
+		int "Solar Charge GPIO"
+		range 0 39
+		default 32
+		help
+			GPIO number (IOxx) of solar charging controller's "charge" output.
+
+	config GPIO_SOLAR_FAULT
+		int "Solar Fault GPIO"
+		range 0 39
+		default 33
+		help
+			GPIO number (IOxx) of solar charging controller's "fault" output.
+
+	config ALARM_MOTOR_UPTIME_MAX
+		int "Maximum Alarm Motor Up Time"
+		range 0 30
+		default 15
+		help
+			Maximum time the motor will move upwards for at alarm time if no stall / reed contact condition is detected.
+
+	config AUTOCLOSE_MOTOR_DOWNTIME
+		int "Maximum Autoclose Motor Down Time"
+		range 0 30
+		default 6
+		help
+			Time the motor will move downwards for at autoclose time.
+
+endmenu

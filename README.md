@@ -26,11 +26,37 @@ The system is is powered by a 12V/7.2Ah lead-acid battery, which is recharged by
 
 ![The PCB in its case](images/external.jpg)
 
-[**Download PDF Schematic**](hardware_pdf/schematic.pdf)
-[**Download PDF PCB Layout**](hardware_pdf/pcb.pdf)
-[**KiCad Sources**](hardware)
+* [**Download PDF Schematic**](hardware_pdf/schematic.pdf)
+* [**Download PDF PCB Layout**](hardware_pdf/pcb.pdf)
+* [**KiCad Sources**](hardware)
 
 ## Firmware
+The controller firmware is based on [esp-idf](https://github.com/espressif/esp-idf).
+Sigfox functionality is based on [renard-phy-s2lp](https://github.com/jeija/renard-phy-s2lp) and [renard-phy-s2lp-hal-esp32](https://github.com/jeija/renard-phy-s2lp-hal-esp32), which are included as git suprojects. This means that you need to make sure to clone this repository with the `--recursive` flag.
+
+The firmware supports over-the-air firmware updates via WiFi. This functionality is based on [esp32-softap-ota](https://github.com/Jeija/esp32-softap-ota).
+
+### Configuration
+For now, Sigfox device ID and secret key are configured directly in `firmware/main/src/sigfox.c`, see variables `sigfox_key` and `sigfox_devid`. The provided default values are those that I published during [my Sigfox reverse engineering presentation](https://jeija.net/sigfox/), so they are known to be compromised!
+
+Watch that presentation to learn more about device ID and secret key (=NAK) and where to obtain yours.
+
+### Initial Build and Flash
+Make sure you have a recent [esp-idf](https://github.com/espressif/esp-idf) version with support for cmake-based projects installed and configured properly. Then compile and flash this project as usual using the following steps:
+
+* `idf.py all` to compile everything
+* `idf.py -p /dev/ttyUSBX flash` to flash everything
+
+### Over-the-Air Firmware Update
+Compile the firmware as described previously and obtain the firmware binary at `firmware/build/sigfox-chicken-door.bin`.
+
+Press both buttons of the chicken coop (up and down) simultaneously until the controller starts beeping regularly. This indicates that it is ready to receive updates.
+
+The controller broadcasts a WiFi network with SSID `ESP32 OTA Update` and acts as an HTTP server. Connect to it, open the webpage at [192.168.4.1](http://192.168.4.1) and use the form to upload the binary. The webpage will show the update progress.
+
+You can also use the `compile_and_post.sh` script to automatically perform the OTA firmware update, which might be useful during development.
 
 ## Web Component
-This component is currently not public.
+The web component connects to the Sigfox API to provide downlinks (e.g. open / close time configuration) to the controller, analyze uplinks and visualize information.
+
+This component is currently not public, but feel free to contact me if you have any questions regarding it.
