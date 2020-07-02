@@ -153,7 +153,6 @@ void app_main(void)
 	ESP_ERROR_CHECK(esp_sleep_disable_wakeup_source(ESP_SLEEP_WAKEUP_ALL));
 	ESP_ERROR_CHECK(input_configure_wakeup());
 
-    esp_restart();
 	esp_deep_sleep_start();
 
 	while(1);
