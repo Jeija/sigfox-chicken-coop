@@ -53,7 +53,7 @@ void app_main(void)
 	ESP_ERROR_CHECK(input_init());
 	wakeup_reason_t wakeup_reason = input_get_wakeup_reason();
 
-	if (true || wakeup_reason != WAKEUP_REASON_UNKNOWN) {
+	if (wakeup_reason != WAKEUP_REASON_UNKNOWN) {
 		// Initialize all systems
 		ESP_ERROR_CHECK(ota_init());
 		ESP_ERROR_CHECK(nvs_init());
@@ -115,7 +115,7 @@ void app_main(void)
 			}
 
 			motor_set(MOTOR_OFF);
-		} else if (true || wakeup_reason == WAKEUP_REASON_RTC) {
+		} else if (wakeup_reason == WAKEUP_REASON_RTC) {
 			// auto-open
 			if (alarm_hours == time_hours && alarm_minutes == time_minutes) {
 				motor_set(MOTOR_UP);
