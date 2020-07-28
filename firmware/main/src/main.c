@@ -23,6 +23,12 @@
 #include "renard_phy_s2lp_protocol.h"
 #include "renard_phy_s2lp.h"
 
+/*
+ * Note about INA219:
+ * Since the new door mechanism has reliable end switches for both ends (up / down), the stall detection is
+ * no longer used and the INA219 is always directly sent to power-down mode.
+ */
+
 esp_err_t nvs_init(void)
 {
 	esp_err_t ret = nvs_flash_init();
@@ -61,6 +67,7 @@ void app_main(void)
 
 		ESP_ERROR_CHECK(bme280adaptor_init());
 		ESP_ERROR_CHECK(ina219_init(INA219_MODE_CONT_SH_BUS, INA219_FSR_32V, INA219_PGA_80MV, INA219_ADC_12BIT, INA219_ADC_12BIT));
+		ESP_ERROR_CHECK(ina219_powerdown());
 		ESP_ERROR_CHECK(rv3029_init());
 		ESP_ERROR_CHECK(buzzer_init());
 		ESP_ERROR_CHECK(motor_init());
@@ -76,24 +83,20 @@ void app_main(void)
 		uint8_t time_minutes, time_hours;
 		ESP_ERROR_CHECK(rv3029_gettime(NULL, &time_minutes, &time_hours));
 
-		// some devices (pressure sensor, INA219) need some time to initialize...
+		// some devices (pressure sensor) need some time to initialize...
 		vTaskDelay(200 / portTICK_PERIOD_MS);
 
 		// Use pressed button: drive motor
 		if (wakeup_reason == WAKEUP_REASON_USER) {
 			button_state_t button_state;
-			bool stall = false;
-			ina219_stall_reset();
 
 			while ((button_state = input_get_button_state()) != BUTTON_NONE) {
 				if (button_state == BUTTON_DOWN) {
 					motor_set(MOTOR_DOWN);
-				} else if (button_state == BUTTON_UP && !stall && !input_get_reed_state()) {
+				} else if (button_state == BUTTON_UP && !input_get_reed_state()) {
 					motor_set(MOTOR_UP);
-					ESP_ERROR_CHECK(ina219_stall_detect(&stall));
 				} else {
 					motor_set(MOTOR_BRAKE);
-					ina219_stall_reset();
 
 					if (button_state == BUTTON_BOTH) {
 						vTaskDelay(1000 / portTICK_PERIOD_MS);
@@ -119,11 +122,8 @@ void app_main(void)
 			// auto-open
 			if (alarm_hours == time_hours && alarm_minutes == time_minutes) {
 				motor_set(MOTOR_UP);
-				ina219_stall_reset();
-				bool stall = false;
 				int64_t start_time = esp_timer_get_time();
-				while (!input_get_reed_state() && !stall && (esp_timer_get_time() - start_time) / 1000000 < CONFIG_ALARM_MOTOR_UPTIME_MAX) {
-					ESP_ERROR_CHECK(ina219_stall_detect(&stall));
+				while (!input_get_reed_state() && (esp_timer_get_time() - start_time) / 1000000 < CONFIG_ALARM_MOTOR_UPTIME_MAX) {
 					vTaskDelay(10 / portTICK_PERIOD_MS);
 				}
 				vTaskDelay(50 / portTICK_PERIOD_MS);
@@ -144,7 +144,6 @@ void app_main(void)
 			sigfox_report(true, false);
 		}
 
-		ESP_ERROR_CHECK(ina219_powerdown());
 		ESP_ERROR_CHECK(bme280adaptor_sleep());
 	}
 

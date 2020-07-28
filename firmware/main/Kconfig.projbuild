@@ -73,14 +73,14 @@ menu "Chicken Door Configuration"
 	config ALARM_MOTOR_UPTIME_MAX
 		int "Maximum Alarm Motor Up Time"
 		range 0 30
-		default 15
+		default 20
 		help
 			Maximum time the motor will move upwards for at alarm time if no stall / reed contact condition is detected.
 
 	config AUTOCLOSE_MOTOR_DOWNTIME
 		int "Maximum Autoclose Motor Down Time"
 		range 0 30
-		default 6
+		default 15
 		help
 			Time the motor will move downwards for at autoclose time.
 
