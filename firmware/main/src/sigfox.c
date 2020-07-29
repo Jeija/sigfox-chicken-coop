@@ -3,6 +3,7 @@
 #include <nvs_flash.h>
 #include <string.h>
 
+#include "renard_phy_s2lp_hal_platform.h"
 #include "renard_phy_s2lp_protocol.h"
 #include "renard_phy_s2lp.h"
 
@@ -75,6 +76,11 @@ esp_err_t sigfox_init(void)
 
 	res |= renard_phy_s2lp_init() == true ? ESP_OK : ESP_FAIL;
 	renard_phy_s2lp_protocol_init(esp_random(), UL_DATARATE_100BPS);
+
+	// Add buttons and RTC as additional light sleep timeout sources
+	renard_phy_s2lp_hal_add_timeout_source(CONFIG_GPIO_BUTTON_UP, GPIO_INTR_HIGH_LEVEL);
+	renard_phy_s2lp_hal_add_timeout_source(CONFIG_GPIO_BUTTON_DOWN, GPIO_INTR_HIGH_LEVEL);
+	renard_phy_s2lp_hal_add_timeout_source(CONFIG_GPIO_RTC_INT, GPIO_INTR_HIGH_LEVEL);
 
 	return res;
 }

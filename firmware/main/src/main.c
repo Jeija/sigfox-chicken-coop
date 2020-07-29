@@ -121,8 +121,10 @@ void app_main(void)
 				motor_set(MOTOR_UP);
 				ina219_stall_reset();
 				bool stall = false;
+				int64_t stall_transient_count = 0;
 				int64_t start_time = esp_timer_get_time();
-				while (!input_get_reed_state() && !stall && (esp_timer_get_time() - start_time) / 1000000 < CONFIG_ALARM_MOTOR_UPTIME_MAX) {
+				while (!input_get_reed_state() && (!stall || stall_transient_count < 200) && (esp_timer_get_time() - start_time) / 1000000 < CONFIG_ALARM_MOTOR_UPTIME_MAX) {
+					stall_transient_count++;
 					ESP_ERROR_CHECK(ina219_stall_detect(&stall));
 					vTaskDelay(10 / portTICK_PERIOD_MS);
 				}
