@@ -31,6 +31,7 @@ typedef struct {
 	 * (1 << 7): door closed (1) or open(0)
 	 * (1 << 6): solar charging (1) or not charging (0)
 	 * (1 << 5): solar fault (1) or no fault (0)
+	 * remaining bits: version indicator
 	 */
 	uint8_t flags;
 	uint8_t autoclose_hours;
@@ -75,7 +76,7 @@ esp_err_t sigfox_init(void)
 	esp_err_t res = ESP_OK;
 
 	res |= renard_phy_s2lp_init() == true ? ESP_OK : ESP_FAIL;
-	renard_phy_s2lp_protocol_init(esp_random(), UL_DATARATE_100BPS);
+	renard_phy_s2lp_protocol_init(esp_random());
 
 	// Add buttons and RTC as additional light sleep timeout sources
 	renard_phy_s2lp_hal_add_timeout_source(CONFIG_GPIO_BUTTON_UP, GPIO_INTR_HIGH_LEVEL);
@@ -103,14 +104,14 @@ esp_err_t sigfox_report(bool request_downlink, bool is_ack)
 	bme280adaptor_get_data(&temperature, &pressure, &humidity);
 	printf("BME280 temp: %.2lf, press: %.2lf, humid: %.2lf\r\n", temperature, pressure, humidity);
 	report.temperature = float_to_byte(temperature, -40, 60);
-	report.pressure = float_to_byte(pressure, 98000, 100000);
+	report.pressure = float_to_byte(pressure, 97000, 100000);
 	report.humidity = float_to_byte(humidity, 0, 100);
 
 	// battery level
 	report.battery = float_to_byte(battery_get_voltage(), 8, 14);
 
 	// door + solar state flags
-	report.flags = 0x00;
+	report.flags = 0x01; // 0x01 as version indicator
 	if (input_get_reed_state())
 		report.flags |= (1 << 7);
 	if (solar_is_charging())
@@ -134,7 +135,7 @@ esp_err_t sigfox_report(bool request_downlink, bool is_ack)
 	/* Actual protocol operation */
 	sfx_dl_plain downlink;
 	int16_t downlink_rssi;
-	int err = renard_phy_s2lp_protocol_transfer(&common, &uplink, &downlink, &downlink_rssi);
+	int err = renard_phy_s2lp_protocol_transfer(&common, &uplink, &downlink, PROFILE_RC1, UL_DATARATE_600BPS, &downlink_rssi);
 
 	/* Log result */
 	if (err == PROTOCOL_ERROR_NONE) {
