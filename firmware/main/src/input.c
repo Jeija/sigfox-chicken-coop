@@ -18,7 +18,7 @@ esp_err_t input_init(void)
 	ret |= rtc_gpio_deinit(CONFIG_GPIO_REED);
 
 	gpio_config_t io_conf;
-	io_conf.intr_type = GPIO_PIN_INTR_DISABLE;
+	io_conf.intr_type = GPIO_INTR_DISABLE;
 	io_conf.pin_bit_mask = ALL_INPUTS_MASK | (1ull << CONFIG_GPIO_REED);
 	io_conf.mode = GPIO_MODE_INPUT;
 	io_conf.pull_down_en = 0;

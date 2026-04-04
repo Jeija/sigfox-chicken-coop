@@ -1,5 +1,4 @@
 #include <freertos/FreeRTOS.h>
-#include <driver/i2c.h>
 #include <sys/param.h>
 #include <math.h>
 

@@ -1,9 +1,9 @@
 #ifndef _I2CDEVICE_H
 #define _I2CDEVICE_H
 
-#define I2C_NUM I2C_NUM_0
-#define I2C_SPEED 100000
-#define I2C_ACK_CHECK_EN 1
+#include <stdint.h>
+
+#include "esp_err.h"
 
 esp_err_t i2cdevice_init(void);
 

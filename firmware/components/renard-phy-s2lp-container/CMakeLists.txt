@@ -22,12 +22,16 @@ add_dependencies(${COMPONENT_LIB} renard_phy_s2lp_build)
 
 add_library(renard_phy_s2lp STATIC IMPORTED GLOBAL)
 set_property(TARGET renard_phy_s2lp PROPERTY IMPORTED_LOCATION ${COMPONENT_DIR}/renard-phy-s2lp/renard-phy-s2lp.a)
-target_link_libraries(${COMPONENT_LIB} PUBLIC INTERFACE renard_phy_s2lp)
+add_library(librenard STATIC IMPORTED GLOBAL)
+set_property(TARGET librenard PROPERTY IMPORTED_LOCATION ${COMPONENT_DIR}/renard-phy-s2lp/librenard/librenard.a)
+target_link_libraries(${COMPONENT_LIB} PUBLIC INTERFACE renard_phy_s2lp librenard)
 
 set_target_properties(renard_phy_s2lp PROPERTIES IMPORTED_LOCATION
 	${COMPONENT_DIR}/renard-phy-s2lp/renard-phy-s2lp.a)
 set_target_properties(renard_phy_s2lp PROPERTIES INTERFACE_INCLUDE_DIRECTORIES
 	${COMPONENT_DIR}/renard-phy-s2lp/src)
+set_target_properties(librenard PROPERTIES INTERFACE_INCLUDE_DIRECTORIES
+	${COMPONENT_DIR}/renard-phy-s2lp/librenard/src)
 
 # "clean" step cannot be properly done
 # Cleaning subproject object files should be manually performed if necessary!

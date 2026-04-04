@@ -6,10 +6,10 @@ esp_err_t motor_init(void)
 {
 	esp_err_t res = ESP_OK;
 
-	gpio_pad_select_gpio(CONFIG_GPIO_MOTOR_UP);
+	res |= gpio_reset_pin(CONFIG_GPIO_MOTOR_UP);
 	res |= gpio_set_direction(CONFIG_GPIO_MOTOR_UP, GPIO_MODE_OUTPUT);
 
-	gpio_pad_select_gpio(CONFIG_GPIO_MOTOR_DOWN);
+	res |= gpio_reset_pin(CONFIG_GPIO_MOTOR_DOWN);
 	res |= gpio_set_direction(CONFIG_GPIO_MOTOR_DOWN, GPIO_MODE_OUTPUT);
 
 	return res;

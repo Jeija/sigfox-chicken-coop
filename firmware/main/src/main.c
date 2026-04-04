@@ -4,6 +4,10 @@
 #include <freertos/task.h>
 #include <driver/rtc_io.h>
 #include <esp_sleep.h>
+#include <esp_timer.h>
+#include <esp_rom_gpio.h>
+#include <hal/gpio_ll.h>
+#include <soc/gpio_sig_map.h>
 #include <sdkconfig.h>
 #include <nvs_flash.h>
 
@@ -36,12 +40,17 @@ esp_err_t nvs_init(void)
 void RTC_IRAM_ATTR esp_wake_deep_sleep(void) {
 	esp_default_wake_deep_sleep();
 
-	gpio_matrix_out(CONFIG_GPIO_MOTOR_UP, SIG_GPIO_OUT_IDX, false, false);
-	gpio_matrix_out(CONFIG_GPIO_MOTOR_DOWN, SIG_GPIO_OUT_IDX, false, false);
+	esp_rom_gpio_connect_out_signal(CONFIG_GPIO_MOTOR_UP, SIG_GPIO_OUT_IDX, false, false);
+	esp_rom_gpio_connect_out_signal(CONFIG_GPIO_MOTOR_DOWN, SIG_GPIO_OUT_IDX, false, false);
+	gpio_ll_output_enable(&GPIO, CONFIG_GPIO_MOTOR_UP);
+	gpio_ll_output_enable(&GPIO, CONFIG_GPIO_MOTOR_DOWN);
+	gpio_ll_input_enable(&GPIO, CONFIG_GPIO_REED);
+	gpio_ll_input_enable(&GPIO, CONFIG_GPIO_BUTTON_UP);
+	gpio_ll_input_enable(&GPIO, CONFIG_GPIO_BUTTON_DOWN);
 
-	if (!GPIO_INPUT_GET(CONFIG_GPIO_REED))
-		GPIO_OUTPUT_SET(CONFIG_GPIO_MOTOR_UP, GPIO_INPUT_GET(CONFIG_GPIO_BUTTON_UP));
-	GPIO_OUTPUT_SET(CONFIG_GPIO_MOTOR_DOWN, GPIO_INPUT_GET(CONFIG_GPIO_BUTTON_DOWN));
+	if (!gpio_ll_get_level(&GPIO, CONFIG_GPIO_REED))
+		gpio_ll_set_level(&GPIO, CONFIG_GPIO_MOTOR_UP, gpio_ll_get_level(&GPIO, CONFIG_GPIO_BUTTON_UP));
+	gpio_ll_set_level(&GPIO, CONFIG_GPIO_MOTOR_DOWN, gpio_ll_get_level(&GPIO, CONFIG_GPIO_BUTTON_DOWN));
 }
 
 void app_main(void)

@@ -5,6 +5,8 @@
 #include <freertos/task.h>
 #include <esp_ota_ops.h>
 #include <esp_system.h>
+#include <esp_event.h>
+#include <esp_netif.h>
 #include <nvs_flash.h>
 #include <sys/param.h>
 #include <esp_wifi.h>
@@ -134,7 +136,7 @@ static esp_err_t softap_init(void)
 	};
 
 	res |= esp_wifi_set_mode(WIFI_MODE_AP);
-	res |= esp_wifi_set_config(ESP_IF_WIFI_AP, &wifi_config);
+	res |= esp_wifi_set_config(WIFI_IF_AP, &wifi_config);
 	res |= esp_wifi_start();
 
 	return res;

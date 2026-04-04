@@ -1,6 +1,7 @@
 #include <freertos/FreeRTOS.h>
 #include <freertos/task.h>
 #include <nvs_flash.h>
+#include <esp_random.h>
 #include <string.h>
 
 #include "renard_phy_s2lp_hal_platform.h"
