@@ -11,11 +11,6 @@
 
 #include "motor.h"
 
-int rtc_wake_stub_force_link(void)
-{
-	return 1;
-}
-
 RTC_DATA_ATTR motor_state_t wake_stub_motor_request = MOTOR_OFF;
 
 void RTC_IRAM_ATTR esp_wake_deep_sleep(void)

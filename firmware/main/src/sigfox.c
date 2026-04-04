@@ -11,6 +11,7 @@
 #include "bme280adaptor.h"
 #include "alarmnvs.h"
 #include "battery.h"
+#include "desired_door_state.h"
 #include "sigfox.h"
 #include "rv3029.h"
 #include "input.h"
@@ -112,6 +113,11 @@ esp_err_t sigfox_report(bool request_downlink, bool is_ack)
 	report.battery = float_to_byte(battery_get_voltage(), 8, 14);
 
 	// door + solar state flags
+	bool door_down_reached = false;
+	bool door_up_reached = false;
+	ESP_ERROR_CHECK(desired_door_state_retrieve_down_reached(&door_down_reached));
+	ESP_ERROR_CHECK(desired_door_state_is_reached(DESIRED_DOOR_STATE_UP, &door_up_reached));
+
 	report.flags = 0x01; // 0x01 as version indicator
 	if (input_get_reed_state())
 		report.flags |= (1 << 7);
@@ -119,6 +125,10 @@ esp_err_t sigfox_report(bool request_downlink, bool is_ack)
 		report.flags |= (1 << 6);
 	if (solar_is_fault())
 		report.flags |= (1 << 5);
+	if (door_up_reached)
+		report.flags |= (1 << 4);
+	if (door_down_reached)
+		report.flags |= (1 << 3);
 
 	/* Sigfox transmission */
 	sfx_commoninfo common;

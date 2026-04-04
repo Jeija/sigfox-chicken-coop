@@ -15,6 +15,7 @@ esp_err_t desired_door_state_store(desired_door_state_t state);
 esp_err_t desired_door_state_retrieve(desired_door_state_t *state);
 esp_err_t desired_door_state_store_down_reached(bool reached);
 esp_err_t desired_door_state_retrieve_down_reached(bool *reached);
+esp_err_t desired_door_state_is_reached(desired_door_state_t desired_state, bool *reached);
 const char *desired_door_state_to_string(desired_door_state_t state);
 
 #endif

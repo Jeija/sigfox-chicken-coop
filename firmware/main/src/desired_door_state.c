@@ -1,6 +1,7 @@
 #include <nvs.h>
 
 #include "desired_door_state.h"
+#include "input.h"
 
 #define DESIRED_DOOR_STATE_NAMESPACE "chickendoor"
 #define DESIRED_DOOR_STATE_KEY "desired_state"
@@ -88,6 +89,21 @@ esp_err_t desired_door_state_retrieve_down_reached(bool *reached)
 
 	*reached = raw_reached != 0;
 	return ESP_OK;
+}
+
+esp_err_t desired_door_state_is_reached(desired_door_state_t desired_state, bool *reached)
+{
+	if (desired_state == DESIRED_DOOR_STATE_USER) {
+		*reached = true;
+		return ESP_OK;
+	}
+
+	if (desired_state == DESIRED_DOOR_STATE_UP) {
+		*reached = input_get_reed_state();
+		return ESP_OK;
+	}
+
+	return desired_door_state_retrieve_down_reached(reached);
 }
 
 const char *desired_door_state_to_string(desired_door_state_t state)
