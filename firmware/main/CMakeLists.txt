@@ -1,4 +1,5 @@
 FILE(GLOB main_sources src/*.c)
+list(APPEND main_sources src/desired_door_state.c)
 
 idf_component_register(SRCS ${main_sources}
 	INCLUDE_DIRS "."

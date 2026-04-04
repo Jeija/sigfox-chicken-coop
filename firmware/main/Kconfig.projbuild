@@ -70,18 +70,11 @@ menu "Chicken Door Configuration"
 		help
 			GPIO number (IOxx) of solar charging controller's "fault" output.
 
-	config ALARM_MOTOR_UPTIME_MAX
-		int "Maximum Alarm Motor Up Time"
+	config MOTOR_RUNTIME_TIMEOUT
+		int "Maximum Motor Runtime"
 		range 0 30
-		default 15
+		default 30
 		help
-			Maximum time the motor will move upwards for at alarm time if no stall / reed contact condition is detected.
-
-	config AUTOCLOSE_MOTOR_DOWNTIME
-		int "Maximum Autoclose Motor Down Time"
-		range 0 30
-		default 6
-		help
-			Time the motor will move downwards for at autoclose time.
+			Maximum time the motor will move in either direction before timing out.
 
 endmenu

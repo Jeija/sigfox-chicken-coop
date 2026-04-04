@@ -16,6 +16,7 @@ typedef enum {
 
 esp_err_t input_init(void);
 esp_err_t input_configure_wakeup(void);
+esp_err_t input_wait_for_wakeup_inputs_idle(uint32_t debounce_ms, uint32_t timeout_ms);
 wakeup_reason_t input_get_wakeup_reason(void);
 button_state_t input_get_button_state(void);
 bool input_get_reed_state(void);

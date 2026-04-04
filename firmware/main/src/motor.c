@@ -19,8 +19,8 @@ esp_err_t motor_set(motor_state_t state)
 {
 	esp_err_t res = ESP_OK;
 
-	res |= gpio_set_level(CONFIG_GPIO_MOTOR_UP, (state == MOTOR_UP || state == MOTOR_BRAKE) ? 1 : 0);
-	res |= gpio_set_level(CONFIG_GPIO_MOTOR_DOWN, (state == MOTOR_DOWN || state == MOTOR_BRAKE) ? 1 : 0);
+	res |= gpio_set_level(CONFIG_GPIO_MOTOR_UP, (state == MOTOR_UP || state == MOTOR_UP_UNTIL_LATCH || state == MOTOR_BRAKE) ? 1 : 0);
+	res |= gpio_set_level(CONFIG_GPIO_MOTOR_DOWN, (state == MOTOR_DOWN || state == MOTOR_DOWN_UNTIL_LATCH || state == MOTOR_BRAKE) ? 1 : 0);
 
 	return res;
 }

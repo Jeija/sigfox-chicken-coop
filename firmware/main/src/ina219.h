@@ -41,9 +41,8 @@ typedef enum {
 esp_err_t ina219_init(ina219_mode_t mode, ina219_fsr_t fsr, ina219_pga_t pga, ina219_adc_t busadc, ina219_adc_t shuntadc);
 esp_err_t ina219_bus_voltage(float *voltage);
 esp_err_t ina219_shunt_voltage(float *voltage);
+esp_err_t ina219_current(float *current);
+esp_err_t ina219_power(float *power);
 esp_err_t ina219_powerdown(void);
-
-void ina219_stall_reset(void);
-esp_err_t ina219_stall_detect(bool *stall);
 
 #endif
