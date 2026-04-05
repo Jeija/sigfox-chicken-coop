@@ -394,7 +394,7 @@ void app_main(void)
 			}
 		}
 
-		//sigfox_report(true, false);
+		sigfox_report(true, false);
 	}
 
 	ESP_ERROR_CHECK(ina219_powerdown());
