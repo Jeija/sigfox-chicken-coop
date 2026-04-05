@@ -1,56 +1,153 @@
 <!DOCTYPE html>
-
-<html>
+<html lang="de">
 	<head>
-		<meta http-equiv="content-type" content="text/html; charset=utf-8" />
-		<title>ESP32 OTA Update</title>
-		<script>
-			function startUpload() {
-				var otafile = document.getElementById("otafile").files;
-
-				if (otafile.length == 0) {
-					alert("No file selected!");
-				} else {
-					document.getElementById("otafile").disabled = true;
-					document.getElementById("upload").disabled = true;
-
-					var file = otafile[0];
-					var xhr = new XMLHttpRequest();
-					xhr.onreadystatechange = function() {
-						if (xhr.readyState == 4) {
-							if (xhr.status == 200) {
-								document.open();
-								document.write(xhr.responseText);
-								document.close();
-							} else if (xhr.status == 0) {
-								alert("Server closed the connection abruptly!");
-								location.reload()
-							} else {
-								alert(xhr.status + " Error!\n" + xhr.responseText);
-								location.reload()
-							}
-						}
-					};
-
-					xhr.upload.onprogress = function (e) {
-						var progress = document.getElementById("progress");
-						progress.textContent = "Progress: " + (e.loaded / e.total * 100).toFixed(0) + "%";
-					};
-					xhr.open("POST", "/update", true);
-					xhr.send(file);
-				}
-			}
-		</script>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<title>Hühnerstall</title>
+		<link rel="stylesheet" href="/app.css" />
 	</head>
 	<body>
-		<h1>ESP32 OTA Firmware Update</h1>
-		<div>
-			<label for="otafile">Firmware file:</label>
-			<input type="file" id="otafile" name="otafile" />
-		</div>
-		<div>
-			<button id="upload" type="button" onclick="startUpload()">Upload</button>
-		</div>
-		<div id="progress"></div>
+		<div class="sky"></div>
+		<main class="shell">
+			<section class="card">
+				<div class="section-heading">
+					<div>
+						<h2>Status</h2>
+					</div>
+					<button class="button button-secondary" id="refreshButton" type="button">Aktualisieren</button>
+				</div>
+				<div class="status-banner" id="statusBanner">Lade Status...</div>
+				<div class="metrics-grid">
+					<article class="metric metric-emphasis">
+						<span class="metric-label">Zeit</span>
+						<strong class="metric-value" id="metricTime">--:--:--</strong>
+						<span class="metric-detail" id="metricWakeReason">Weckgrund: --</span>
+					</article>
+					<article class="metric">
+						<span class="metric-label">Sollzustand</span>
+						<strong class="metric-value" id="metricDesiredState">--</strong>
+						<span class="metric-detail" id="metricDesiredReached">Erreicht: --</span>
+					</article>
+					<article class="metric">
+						<span class="metric-label">Motor</span>
+						<strong class="metric-value" id="metricMotorState">--</strong>
+						<span class="metric-detail" id="metricButtonState">Tasten: --</span>
+					</article>
+					<article class="metric">
+						<span class="metric-label">Reed</span>
+						<strong class="metric-value" id="metricReed">--</strong>
+						<span class="metric-detail" id="metricDoorFlags">Oben: --, Unten: --</span>
+					</article>
+					<article class="metric">
+						<span class="metric-label">Akku</span>
+						<strong class="metric-value" id="metricBattery">-- V</strong>
+						<span class="metric-detail" id="metricPower">Motor: -- W / -- A</span>
+					</article>
+					<article class="metric">
+						<span class="metric-label">Klima</span>
+						<strong class="metric-value" id="metricClimate">-- °C</strong>
+						<span class="metric-detail" id="metricClimateDetail">-- hPa, -- %RH</span>
+					</article>
+					<article class="metric">
+						<span class="metric-label">Zeitplan</span>
+						<strong class="metric-value" id="metricAlarm">--:--</strong>
+						<span class="metric-detail" id="metricAutoclose">Auto-Close: --</span>
+					</article>
+					<article class="metric">
+						<span class="metric-label">Solar</span>
+						<strong class="metric-value" id="metricSolar">--</strong>
+						<span class="metric-detail" id="metricSigfoxAuthority">Sigfox: --</span>
+					</article>
+				</div>
+			</section>
+
+			<section class="two-column">
+				<section class="card">
+					<div class="section-heading">
+						<div>
+							<h2>Einstellungen</h2>
+						</div>
+					</div>
+					<form id="configForm" class="form-layout">
+						<label class="field">
+							<span>Zeit</span>
+							<input id="currentTime" type="time" required />
+						</label>
+						<label class="field">
+							<span>Öffnen</span>
+							<input id="alarmTime" type="time" required />
+						</label>
+						<label class="field field-wide">
+							<span>Schließen</span>
+							<select id="autocloseHour" required>
+								<option value="25">Aus</option>
+								<option value="0">00:00</option>
+								<option value="1">01:00</option>
+								<option value="2">02:00</option>
+								<option value="3">03:00</option>
+								<option value="4">04:00</option>
+								<option value="5">05:00</option>
+								<option value="6">06:00</option>
+								<option value="7">07:00</option>
+								<option value="8">08:00</option>
+								<option value="9">09:00</option>
+								<option value="10">10:00</option>
+								<option value="11">11:00</option>
+								<option value="12">12:00</option>
+								<option value="13">13:00</option>
+								<option value="14">14:00</option>
+								<option value="15">15:00</option>
+								<option value="16">16:00</option>
+								<option value="17">17:00</option>
+								<option value="18">18:00</option>
+								<option value="19">19:00</option>
+								<option value="20">20:00</option>
+								<option value="21">21:00</option>
+								<option value="22">22:00</option>
+								<option value="23">23:00</option>
+							</select>
+						</label>
+						<div class="action-row field-wide">
+							<button class="button button-primary" id="saveRebootButton" type="button">Speichern und neu starten</button>
+							<button class="button button-danger" id="discardRebootButton" type="button">Verwerfen und neu starten</button>
+						</div>
+					</form>
+				</section>
+
+				<section class="stack">
+					<section class="card">
+						<div class="section-heading">
+							<div>
+								<h2>Sigfox</h2>
+							</div>
+						</div>
+						<div class="action-row">
+							<button class="button button-secondary" id="sigfoxButton" type="button">Sync starten</button>
+						</div>
+					</section>
+
+					<section class="card">
+						<div class="section-heading">
+							<div>
+								<h2>Firmware</h2>
+							</div>
+						</div>
+						<label class="field field-wide">
+							<span>Datei</span>
+							<input type="file" id="otafile" />
+						</label>
+						<div class="action-row">
+							<button class="button button-primary" id="uploadButton" type="button">Hochladen</button>
+						</div>
+						<div class="progress-track">
+							<div class="progress-fill" id="progressFill"></div>
+						</div>
+						<div class="inline-status" id="otaStatus">Bereit.</div>
+					</section>
+				</section>
+			</section>
+		</main>
+
+		<script src="/app.js"></script>
 	</body>
 </html>

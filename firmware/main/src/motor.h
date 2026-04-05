@@ -12,5 +12,7 @@ typedef enum {
 
 esp_err_t motor_init(void);
 esp_err_t motor_set(motor_state_t state);
+motor_state_t motor_get_state(void);
+const char *motor_state_to_string(motor_state_t state);
 
 #endif

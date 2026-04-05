@@ -1,6 +1,11 @@
 #ifndef _INPUT_H
 #define _INPUT_H
 
+#include <stdbool.h>
+#include <stdint.h>
+
+#include <esp_err.h>
+
 typedef enum {
 	WAKEUP_REASON_USER = 0,
 	WAKEUP_REASON_RTC = 1,

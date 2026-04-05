@@ -22,6 +22,7 @@
 #include "solar.h"
 #include "input.h"
 #include "ota.h"
+#include "runtime_status.h"
 
 extern int rtc_wake_stub_force_link(void);
 extern motor_state_t wake_stub_motor_request;
@@ -184,6 +185,7 @@ void app_main(void)
 	// Determine wakeup reason
 	ESP_ERROR_CHECK(input_init());
 	wakeup_reason_t wakeup_reason = input_get_wakeup_reason();
+	runtime_status_set_last_wakeup_reason(wakeup_reason);
 	ESP_LOGI("main", "Wakeup reason resolved to %s",
 			wakeup_reason == WAKEUP_REASON_USER ? "USER" :
 			wakeup_reason == WAKEUP_REASON_RTC ? "RTC" : "UNKNOWN");
