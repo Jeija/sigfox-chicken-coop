@@ -1,3 +1,5 @@
+#include <setjmp.h>
+
 #include <freertos/FreeRTOS.h>
 #include <freertos/task.h>
 #include <nvs_flash.h>
@@ -146,8 +148,16 @@ esp_err_t sigfox_report(bool request_downlink, bool is_ack)
 	/* Actual protocol operation */
 	sfx_dl_plain downlink;
 	int16_t downlink_rssi;
+	jmp_buf abort_env;
 	printf("starting Sigfox transmission\r\n");
+	renard_phy_s2lp_hal_abort_arm(&abort_env);
+	if (setjmp(abort_env) != 0) {
+		renard_phy_s2lp_hal_abort_disarm();
+		printf("[renard-phy-s2lp-demo-esp32] Aborted by wake input during Sigfox operation\r\n");
+		return ESP_ERR_INVALID_STATE;
+	}
 	int err = renard_phy_s2lp_protocol_transfer(&common, &uplink, &downlink, PROFILE_RC1, UL_DATARATE_100BPS, &downlink_rssi);
+	renard_phy_s2lp_hal_abort_disarm();
 
 	/* Log result */
 	if (err == PROTOCOL_ERROR_NONE) {

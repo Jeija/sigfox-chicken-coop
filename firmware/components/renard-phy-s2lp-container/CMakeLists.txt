@@ -9,6 +9,7 @@ add_custom_command(
 	OUTPUT ${COMPONENT_DIR}/renard-phy-s2lp/renard-phy-s2lp.a
 	DEPENDS ${renard_phy_s2lp_srcs} ${librenard_srcs}
 	WORKING_DIRECTORY ${COMPONENT_DIR}/renard-phy-s2lp
+	COMMAND ${CMAKE_COMMAND} -E rm -f ${COMPONENT_DIR}/renard-phy-s2lp/renard-phy-s2lp.a
 	COMMAND make CC=${CMAKE_C_COMPILER} AR=${CMAKE_AR} ARCHFLAGS=${CMAKE_C_FLAGS}
 	COMMENT "Compiling renard-phy-s2lp"
 )

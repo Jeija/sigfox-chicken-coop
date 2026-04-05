@@ -8,6 +8,7 @@
 #include <sdkconfig.h>
 #include <nvs_flash.h>
 #include <esp_log.h>
+#include <esp_system.h>
 
 #include "bme280adaptor.h"
 #include "i2cdevice.h"
@@ -474,7 +475,12 @@ void app_main(void)
 		}
 
 		printf("reporting to Sigfox\r\n");
-		sigfox_report(true, false);
+		esp_err_t sigfox_err = sigfox_report(true, false);
+		if (sigfox_err == ESP_ERR_INVALID_STATE) {
+			printf("Sigfox aborted by wake input, rebooting\r\n");
+			esp_restart();
+		}
+		ESP_ERROR_CHECK(sigfox_err);
 		printf("Sigfox report done\r\n");
 
 		if (autoclose_is_due(autoclose_hours, time_hours, alarm_minutes, time_minutes)) {
