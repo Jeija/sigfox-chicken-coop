@@ -146,6 +146,7 @@ esp_err_t sigfox_report(bool request_downlink, bool is_ack)
 	/* Actual protocol operation */
 	sfx_dl_plain downlink;
 	int16_t downlink_rssi;
+	printf("starting Sigfox transmission\r\n");
 	int err = renard_phy_s2lp_protocol_transfer(&common, &uplink, &downlink, PROFILE_RC1, UL_DATARATE_100BPS, &downlink_rssi);
 
 	/* Log result */

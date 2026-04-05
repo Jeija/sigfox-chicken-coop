@@ -1,7 +1,7 @@
 :root {
 	--bg-top: #f8ecd8;
 	--bg-bottom: #efe1cd;
-	--panel: rgba(255, 252, 247, 0.86);
+	--panel: #fffaf4;
 	--panel-strong: #fffaf2;
 	--text: #2b241d;
 	--muted: #766457;
@@ -12,7 +12,7 @@
 	--ok: #2d7044;
 	--danger: #a13528;
 	--danger-soft: rgba(161, 53, 40, 0.12);
-	--shadow: 0 24px 64px rgba(82, 55, 39, 0.14);
+	--shadow: 0 6px 18px rgba(82, 55, 39, 0.08);
 }
 
 * {
@@ -28,20 +28,7 @@ body {
 	min-height: 100vh;
 	color: var(--text);
 	font-family: "Trebuchet MS", "Gill Sans", sans-serif;
-	background:
-		radial-gradient(circle at 18% 12%, rgba(255, 214, 165, 0.95), transparent 22%),
-		radial-gradient(circle at 84% 8%, rgba(216, 124, 63, 0.30), transparent 18%),
-		linear-gradient(180deg, var(--bg-top) 0%, var(--bg-bottom) 100%);
-}
-
-.sky {
-	position: fixed;
-	inset: 0;
-	pointer-events: none;
-	background:
-		linear-gradient(135deg, rgba(255,255,255,0.24) 25%, transparent 25%) 0 0 / 34px 34px,
-		linear-gradient(225deg, rgba(255,255,255,0.16) 25%, transparent 25%) 0 0 / 34px 34px;
-	opacity: 0.22;
+	background: linear-gradient(180deg, var(--bg-top) 0%, var(--bg-bottom) 100%);
 }
 
 .shell {
@@ -56,7 +43,6 @@ body {
 	border: 1px solid var(--line);
 	border-radius: 22px;
 	background: var(--panel);
-	backdrop-filter: blur(14px);
 	box-shadow: var(--shadow);
 }
 
@@ -77,7 +63,7 @@ body {
 	margin-top: 16px;
 	padding: 14px 16px;
 	border-radius: 18px;
-	background: rgba(255, 255, 255, 0.62);
+	background: #fffdf9;
 	border: 1px solid rgba(85, 63, 46, 0.08);
 	color: var(--muted);
 	line-height: 1.45;
@@ -112,7 +98,7 @@ body {
 }
 
 .metric-emphasis {
-	background: linear-gradient(180deg, rgba(255, 245, 230, 0.98), rgba(255, 252, 247, 0.92));
+	background: #fff7eb;
 }
 
 .metric-label {
@@ -187,7 +173,7 @@ select {
 	padding: 14px 15px;
 	border: 1px solid rgba(85, 63, 46, 0.14);
 	border-radius: 18px;
-	background: rgba(255, 255, 255, 0.84);
+	background: #ffffff;
 	color: var(--text);
 }
 
@@ -218,8 +204,8 @@ select:focus {
 }
 
 .button:hover {
-	transform: translateY(-1px);
-	box-shadow: 0 14px 28px rgba(90, 55, 34, 0.12);
+	transform: none;
+	box-shadow: none;
 }
 
 .button:disabled {
@@ -256,8 +242,7 @@ select:focus {
 	width: 0%;
 	height: 100%;
 	border-radius: inherit;
-	background: linear-gradient(90deg, #e08c4d, #c75d2c);
-	transition: width 180ms ease;
+	background: var(--accent);
 }
 
 @media (max-width: 960px) {
@@ -276,11 +261,16 @@ select:focus {
 		padding: 8px 0 8px;
 	}
 
+	body {
+		background: #f3e8d7;
+	}
+
 	.two-column > .card,
 	.stack > .card,
 	.shell > .card {
 		padding: 14px;
 		border-radius: 18px;
+		box-shadow: 0 2px 8px rgba(82, 55, 39, 0.06);
 	}
 
 	.metrics-grid,

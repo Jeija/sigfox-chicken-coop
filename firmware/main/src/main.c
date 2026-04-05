@@ -27,8 +27,9 @@
 extern int rtc_wake_stub_force_link(void);
 extern motor_state_t wake_stub_motor_request;
 
-#define MOTOR_ENDSTATE_POWER_THRESHOLD_W 0.05f
+#define MOTOR_ENDSTATE_POWER_THRESHOLD_W 0.1f
 #define MOTOR_ENDSTATE_MIN_DURATION_US 500000
+#define MOTOR_REED_MIN_DURATION_US 500000
 #define USER_INTERACTION_WINDOW_US 20000000LL
 #define USER_LONG_PRESS_THRESHOLD_US 500000LL
 
@@ -54,6 +55,22 @@ static motor_state_t button_state_to_latched_motor(button_state_t button_state)
 	if (button_state == BUTTON_DOWN)
 		return MOTOR_DOWN_UNTIL_LATCH;
 	return MOTOR_OFF;
+}
+
+static bool motor_state_is_latched(motor_state_t state)
+{
+	return state == MOTOR_UP_UNTIL_LATCH || state == MOTOR_DOWN_UNTIL_LATCH;
+}
+
+static bool autoclose_is_due(uint8_t autoclose_hours, uint8_t time_hours, uint8_t alarm_minutes, uint8_t time_minutes)
+{
+	return autoclose_hours == time_hours && alarm_minutes == time_minutes;
+}
+
+static void disable_autoclose(void)
+{
+	ESP_ERROR_CHECK(alarmnvs_store_autoclose_hours(25));
+	ESP_LOGI("main", "Autoclose executed, disabling one-shot autoclose by storing 25");
 }
 
 esp_err_t nvs_init(void)
@@ -96,8 +113,11 @@ static void motor_set_logged(motor_state_t state)
 static bool motor_power_end_state_reached_if_due(motor_state_t state, int64_t *last_log_time_us, int64_t *low_power_since_us)
 {
 	if (state != MOTOR_UP && state != MOTOR_DOWN &&
-			state != MOTOR_UP_UNTIL_LATCH && state != MOTOR_DOWN_UNTIL_LATCH)
+			state != MOTOR_UP_UNTIL_LATCH && state != MOTOR_DOWN_UNTIL_LATCH) {
+		*last_log_time_us = 0;
+		*low_power_since_us = 0;
 		return false;
+	}
 
 	int64_t now = esp_timer_get_time();
 	if (*last_log_time_us != 0 && now - *last_log_time_us < 100000)
@@ -130,9 +150,23 @@ static bool motor_power_end_state_reached_if_due(motor_state_t state, int64_t *l
 	return end_state_reached;
 }
 
-static bool motor_reed_stop_reached(motor_state_t state)
+static bool motor_reed_stop_reached_if_due(motor_state_t state, int64_t *reed_closed_since_us)
 {
-	return (state == MOTOR_UP || state == MOTOR_UP_UNTIL_LATCH) && input_get_reed_state();
+	if (state != MOTOR_UP && state != MOTOR_UP_UNTIL_LATCH) {
+		*reed_closed_since_us = 0;
+		return false;
+	}
+
+	int64_t now = esp_timer_get_time();
+	if (input_get_reed_state()) {
+		if (*reed_closed_since_us == 0)
+			*reed_closed_since_us = now;
+
+		return now - *reed_closed_since_us >= MOTOR_REED_MIN_DURATION_US;
+	}
+
+	*reed_closed_since_us = 0;
+	return false;
 }
 
 static void motor_stop_after_power_end_state(motor_state_t state)
@@ -143,12 +177,14 @@ static void motor_stop_after_power_end_state(motor_state_t state)
 		printf("[desired] persisted DOWN reached flag\r\n");
 	}
 	motor_set_logged(MOTOR_BRAKE);
+	buzzer_buzz(2000, 200);
 }
 
 static bool motor_run_until_target(motor_state_t state, int64_t timeout_s, desired_door_state_t desired_state)
 {
 	int64_t last_power_log_time_us = 0;
 	int64_t low_power_since_us = 0;
+	int64_t reed_closed_since_us = 0;
 	int64_t start_time_us = esp_timer_get_time();
 	int64_t timeout_us = timeout_s * 1000000LL;
 	int64_t deadline_us = start_time_us + timeout_us;
@@ -158,9 +194,10 @@ static bool motor_run_until_target(motor_state_t state, int64_t timeout_s, desir
 	motor_set_logged(state);
 
 	while (esp_timer_get_time() < deadline_us) {
-		if (desired_state == DESIRED_DOOR_STATE_UP && motor_reed_stop_reached(state)) {
+		if (desired_state == DESIRED_DOOR_STATE_UP && motor_reed_stop_reached_if_due(state, &reed_closed_since_us)) {
 			printf("[motor] desired UP reached via reed contact\r\n");
 			motor_set_logged(MOTOR_BRAKE);
+			buzzer_buzz(2000, 200);
 			return true;
 		}
 
@@ -228,9 +265,10 @@ void app_main(void)
 		desired_state = DESIRED_DOOR_STATE_UP;
 		ESP_ERROR_CHECK(desired_door_state_store(desired_state));
 		ESP_LOGI("main", "Alarm time matched, storing desired door state UP");
-	} else if (autoclose_hours == time_hours && alarm_minutes == time_minutes) {
+	} else if (autoclose_is_due(autoclose_hours, time_hours, alarm_minutes, time_minutes)) {
 		desired_state = DESIRED_DOOR_STATE_DOWN;
 		ESP_ERROR_CHECK(desired_door_state_store(desired_state));
+		disable_autoclose();
 		ESP_LOGI("main", "Autoclose time matched, storing desired door state DOWN");
 	} else {
 		ESP_LOGI("main", "No desired door state update on this wake");
@@ -251,8 +289,10 @@ void app_main(void)
 		button_state_t raw_button_state = input_get_button_state();
 		button_state_t button_state = raw_button_state;
 		motor_state_t commanded_state = MOTOR_OFF;
+		bool stopping_latched_motion = false;
 		int64_t last_power_log_time_us = 0;
 		int64_t low_power_since_us = 0;
+		int64_t reed_closed_since_us = 0;
 
 		if (button_state == BUTTON_NONE &&
 				(wake_stub_motor_request == MOTOR_UP_UNTIL_LATCH || wake_stub_motor_request == MOTOR_DOWN_UNTIL_LATCH)) {
@@ -278,14 +318,21 @@ void app_main(void)
 				if (button_state == BUTTON_UP || button_state == BUTTON_DOWN) {
 					tracked_press = button_state;
 					tracked_press_start_us = now_us;
-					commanded_state = button_state_to_direct_motor(button_state);
-					if (!(commanded_state == MOTOR_UP && motor_reed_stop_reached(commanded_state))) {
+					if (motor_state_is_latched(commanded_state)) {
+						stopping_latched_motion = true;
+						commanded_state = MOTOR_BRAKE;
 						motor_set_logged(commanded_state);
+					} else {
+						commanded_state = button_state_to_direct_motor(button_state);
+						if (!(commanded_state == MOTOR_UP && motor_reed_stop_reached_if_due(commanded_state, &reed_closed_since_us))) {
+							motor_set_logged(commanded_state);
+						}
 					}
 				} else if (button_state == BUTTON_BOTH) {
 					tracked_press = BUTTON_BOTH;
 					tracked_press_start_us = now_us;
 					both_action_handled = false;
+					stopping_latched_motion = false;
 					commanded_state = MOTOR_BRAKE;
 					motor_set_logged(commanded_state);
 				} else if (motor_state_is_active(commanded_state)) {
@@ -295,9 +342,39 @@ void app_main(void)
 					motor_set_logged(commanded_state);
 				}
 			} else if (tracked_press == BUTTON_UP || tracked_press == BUTTON_DOWN) {
-				if (button_state == tracked_press) {
+				if (stopping_latched_motion) {
+					if (button_state == tracked_press) {
+						if (now_us - tracked_press_start_us >= USER_LONG_PRESS_THRESHOLD_US) {
+							stopping_latched_motion = false;
+							commanded_state = button_state_to_direct_motor(tracked_press);
+							if (!(commanded_state == MOTOR_UP && motor_reed_stop_reached_if_due(commanded_state, &reed_closed_since_us))) {
+								motor_set_logged(commanded_state);
+							}
+						} else {
+							commanded_state = MOTOR_BRAKE;
+							motor_set_logged(commanded_state);
+						}
+					} else if (button_state == BUTTON_NONE) {
+						commanded_state = MOTOR_BRAKE;
+						motor_set_logged(commanded_state);
+						tracked_press = BUTTON_NONE;
+						stopping_latched_motion = false;
+					} else if (button_state == BUTTON_BOTH) {
+						tracked_press = BUTTON_BOTH;
+						tracked_press_start_us = now_us;
+						both_action_handled = false;
+						stopping_latched_motion = false;
+						commanded_state = MOTOR_BRAKE;
+						motor_set_logged(commanded_state);
+					} else {
+						tracked_press = button_state;
+						tracked_press_start_us = now_us;
+						commanded_state = MOTOR_BRAKE;
+						motor_set_logged(commanded_state);
+					}
+				} else if (button_state == tracked_press) {
 					commanded_state = button_state_to_direct_motor(tracked_press);
-					if (!(commanded_state == MOTOR_UP && motor_reed_stop_reached(commanded_state))) {
+					if (!(commanded_state == MOTOR_UP && motor_reed_stop_reached_if_due(commanded_state, &reed_closed_since_us))) {
 						motor_set_logged(commanded_state);
 					}
 				} else if (button_state == BUTTON_NONE) {
@@ -313,17 +390,20 @@ void app_main(void)
 					tracked_press = BUTTON_BOTH;
 					tracked_press_start_us = now_us;
 					both_action_handled = false;
+					stopping_latched_motion = false;
 					commanded_state = MOTOR_BRAKE;
 					motor_set_logged(commanded_state);
 				} else {
 					tracked_press = button_state;
 					tracked_press_start_us = now_us;
+					stopping_latched_motion = false;
 					commanded_state = button_state_to_direct_motor(button_state);
-					if (!(commanded_state == MOTOR_UP && motor_reed_stop_reached(commanded_state))) {
+					if (!(commanded_state == MOTOR_UP && motor_reed_stop_reached_if_due(commanded_state, &reed_closed_since_us))) {
 						motor_set_logged(commanded_state);
 					}
 				}
 			} else if (tracked_press == BUTTON_BOTH) {
+				stopping_latched_motion = false;
 				commanded_state = MOTOR_BRAKE;
 				motor_set_logged(commanded_state);
 
@@ -334,41 +414,35 @@ void app_main(void)
 						stay_awake_until_us = esp_timer_get_time() + USER_INTERACTION_WINDOW_US;
 					}
 				} else {
-					if (!both_action_handled && button_state == BUTTON_NONE) {
-						vTaskDelay(pdMS_TO_TICKS(100));
-						buzzer_buzz(554, 100);
-						buzzer_buzz(659, 100);
-						buzzer_buzz(784, 100);
-						vTaskDelay(pdMS_TO_TICKS(100));
-						sigfox_report(true, false);
-						stay_awake_until_us = esp_timer_get_time() + USER_INTERACTION_WINDOW_US;
-					}
-
 					tracked_press = BUTTON_NONE;
 					if (button_state == BUTTON_UP || button_state == BUTTON_DOWN) {
 						tracked_press = button_state;
 						tracked_press_start_us = esp_timer_get_time();
+						stopping_latched_motion = false;
 						commanded_state = button_state_to_direct_motor(button_state);
-						if (!(commanded_state == MOTOR_UP && motor_reed_stop_reached(commanded_state))) {
+						if (!(commanded_state == MOTOR_UP && motor_reed_stop_reached_if_due(commanded_state, &reed_closed_since_us))) {
 							motor_set_logged(commanded_state);
 						}
 					}
 				}
 			}
 
-			if (motor_reed_stop_reached(commanded_state)) {
+			if (motor_reed_stop_reached_if_due(commanded_state, &reed_closed_since_us)) {
 				printf("[motor] reed stop reached\r\n");
 				motor_set_logged(MOTOR_BRAKE);
+				buzzer_buzz(2000, 200);
 				if (tracked_press == BUTTON_UP || tracked_press == BUTTON_BOTH) {
 					suppressed_buttons |= BUTTON_UP;
 				}
 				tracked_press = BUTTON_NONE;
+				stopping_latched_motion = false;
 				commanded_state = MOTOR_BRAKE;
 			}
 			if (motor_power_end_state_reached_if_due(commanded_state, &last_power_log_time_us, &low_power_since_us)) {
 				motor_stop_after_power_end_state(commanded_state);
 				suppressed_buttons |= raw_button_state;
 				tracked_press = BUTTON_NONE;
+				stopping_latched_motion = false;
 				commanded_state = MOTOR_BRAKE;
 			}
 
@@ -377,6 +451,13 @@ void app_main(void)
 
 		motor_set_logged(MOTOR_OFF);
 	} else { // WAKEUP_REASON_RTC or WAKEUP_REASON_UNKNOWN
+		// Play tune if we woke up to to unknown reason
+		if (wakeup_reason == WAKEUP_REASON_UNKNOWN) {
+			buzzer_buzz(554, 100);
+			buzzer_buzz(659, 100);
+			buzzer_buzz(784, 100);
+		}
+
 		bool desired_state_reached = false;
 		ESP_ERROR_CHECK(desired_door_state_is_reached(desired_state, &desired_state_reached));
 
@@ -390,13 +471,23 @@ void app_main(void)
 		} else if (desired_state == DESIRED_DOOR_STATE_DOWN) {
 			ESP_LOGI("main", "Desired door state DOWN not reached, moving down");
 			motor_run_until_target(MOTOR_DOWN, CONFIG_MOTOR_RUNTIME_TIMEOUT, desired_state);
-			if (autoclose_hours == time_hours && alarm_minutes == time_minutes) {
-				ESP_ERROR_CHECK(alarmnvs_store_autoclose_hours(25));
-				ESP_LOGI("main", "Autoclose executed, disabling one-shot autoclose by storing 25");
-			}
 		}
 
+		printf("reporting to Sigfox\r\n");
 		sigfox_report(true, false);
+		printf("Sigfox report done\r\n");
+
+		if (autoclose_is_due(autoclose_hours, time_hours, alarm_minutes, time_minutes)) {
+			desired_state = DESIRED_DOOR_STATE_DOWN;
+			ESP_ERROR_CHECK(desired_door_state_store(desired_state));
+			disable_autoclose();
+			ESP_LOGI("main", "Autoclose time matched after Sigfox report, storing desired door state DOWN");
+
+			bool desired_state_down_reached = false;
+			ESP_ERROR_CHECK(desired_door_state_is_reached(desired_state, &desired_state_down_reached));
+			if (!desired_state_down_reached)
+				motor_run_until_target(MOTOR_DOWN, CONFIG_MOTOR_RUNTIME_TIMEOUT, desired_state);
+		}
 	}
 
 	ESP_ERROR_CHECK(ina219_powerdown());
